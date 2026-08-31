@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
@@ -110,3 +111,18 @@ class SeedCatalogTests(TestCase):
         self.assertGreaterEqual(product.categories.count(), 2)
         call_command("seed_catalog", "--demo")
         self.assertEqual(Product.objects.filter(sku="PC-MW-16").count(), 1)
+
+
+class ExampleCatalogCsvTests(TestCase):
+    def test_live_site_example_csv_imports(self):
+        call_command("seed_catalog")
+        path = settings.BASE_DIR / "docs" / "examples" / "products.csv"
+        dataset = Dataset().load(path.read_text(encoding="utf-8"), format="csv")
+        result = ProductResource().import_data(dataset, dry_run=False)
+        self.assertFalse(result.has_errors(), result.row_errors())
+        self.assertGreaterEqual(Product.objects.count(), 140)
+        makan = Product.objects.get(sku="GH-GREENHOUSE-MAKAN")
+        self.assertTrue(makan.categories.filter(slug="food-manufacturing").exists())
+        self.assertTrue(makan.categories.filter(slug="turnkey-facilities").exists())
+        sheets = Product.objects.get(sku="PL-MULTIWALL-POLYCARBONATE-ROOFING-GLAZING-SHEETS")
+        self.assertTrue(sheets.categories.filter(slug="polycarbonate").exists())

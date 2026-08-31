@@ -51,7 +51,13 @@ Use Django admin for day-to-day work:
 - **Pages** — heading, lead, body, and image for Home, Solutions, About, Wholesale, Contact, Quote, Services, Cases, Terms, Privacy, Cookies
 - **Services** and **Projects** — list + detail pages
 
-CSV import/export is on those same admin screens (Import / Export). Product categories in a CSV are category slugs separated by `|`. Example files: `docs/examples/products.csv` and `docs/examples/pages.csv`. Images and PDFs are uploaded in admin, not via CSV.
+CSV import/export is on those same admin screens (Import / Export). Product categories in a CSV are category slugs separated by `|`. A test catalog scraped from the live English site is in `docs/examples/products.csv` (149 products, guessed categories, no images). After `seed_catalog`:
+
+```bash
+python manage.py import_products_csv
+```
+
+Or in admin: Products → Import → upload that file. Re-importing updates by SKU.
 
 Public product URLs use the SKU: `/products/<sku>/`.
 
