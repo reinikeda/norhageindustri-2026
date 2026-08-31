@@ -1,3 +1,5 @@
+import json
+
 from django.http import Http404
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -104,25 +106,67 @@ class SolutionTopicView(TemplateView):
         if category is None and topic is None:
             raise Http404("Unknown solution topic")
         heading = category.name if category else topic["label"]
-        lead = ""
-        if category and category.description:
-            lead = category.description
-        elif topic:
-            lead = (
-                f"{topic['group_title']}. The product list for this topic will be added with the "
-                "English catalog. Ask for a quote and we will match materials, systems, and quantities."
-            )
+        group_title = category.get_group_display() if category else topic["group_title"]
         products = []
         if category:
-            products = category.products.filter(is_active=True).prefetch_related("images")
+            products = list(
+                category.products.filter(is_active=True).prefetch_related("images").order_by("name")
+            )
+        if category and category.description and len(category.description) > 80:
+            lead = category.description
+        else:
+            lead = (
+                f"{heading} products from Norhage Industri for commercial projects. "
+                "Browse specifications and documents, then ask for a quote — prices are not published."
+            )
+        sibling_categories = []
+        if category:
+            sibling_categories = (
+                Category.objects.filter(group=category.group, is_active=True)
+                .exclude(pk=category.pk)[:8]
+            )
+        canonical = self.request.build_absolute_uri()
+        breadcrumbs = [
+            {"label": "Home", "url": "/"},
+            {"label": "Solutions & products", "url": "/solutions/"},
+            {"label": heading, "url": ""},
+        ]
+        item_list = [
+            {
+                "@type": "ListItem",
+                "position": index,
+                "url": self.request.build_absolute_uri(item.get_absolute_url()),
+                "name": item.name,
+            }
+            for index, item in enumerate(products[:20], start=1)
+        ]
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": heading,
+            "description": lead[:160],
+            "url": canonical,
+            "mainEntity": {
+                "@type": "ItemList",
+                "numberOfItems": len(products),
+                "itemListElement": item_list,
+            },
+        }
         context.update(
             {
                 "title": heading,
-                "meta_description": f"{heading} solutions from Norhage Industri.",
+                "meta_description": lead[:160],
+                "canonical_url": canonical,
+                "og_type": "website",
+                "json_ld": json.dumps(json_ld, ensure_ascii=False),
                 "heading": heading,
                 "lead": lead,
+                "group_title": group_title,
                 "category": category,
                 "products": products,
+                "product_count": len(products),
+                "sibling_categories": sibling_categories,
+                "breadcrumbs": breadcrumbs,
             }
         )
         return context

@@ -55,7 +55,14 @@ class Product(models.Model):
     )
     short_description = models.TextField(blank=True)
     full_description = models.TextField(blank=True)
-    technical_text = models.TextField("Technical information", blank=True)
+    technical_text = models.TextField(
+        "Technical notes",
+        blank=True,
+        help_text=(
+            "Optional notes under the specification table. For a table, add rows in "
+            "Specifications, or write one 'Property: value' / 'Property – value' per line."
+        ),
+    )
     seo_title = models.CharField(max_length=70, blank=True)
     seo_description = models.CharField(max_length=160, blank=True)
     is_active = models.BooleanField("Published", default=True)
@@ -78,12 +85,28 @@ class Product(models.Model):
         return reverse("products:detail", kwargs={"sku": self.sku})
 
     @property
-    def main_image(self):
+    def image_list(self):
         images = list(self.images.all())
-        if not images:
-            return None
         images.sort(key=lambda image: (image.sort_order, image.id))
-        return images[0].file
+        return images
+
+    @property
+    def main_image(self):
+        images = self.image_list
+        return images[0].file if images else None
+
+    def primary_category(self):
+        group_rank = {
+            Category.Group.MATERIAL: 0,
+            Category.Group.SYSTEM: 1,
+            Category.Group.INDUSTRY: 2,
+            Category.Group.OTHER: 3,
+        }
+        categories = list(self.categories.all())
+        categories.sort(
+            key=lambda item: (group_rank.get(item.group, 9), item.sort_order, item.name)
+        )
+        return categories[0] if categories else None
 
 
 class ProductImage(models.Model):
@@ -110,3 +133,30 @@ class ProductDocument(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def file_kind(self):
+        name = (self.file.name or "").lower()
+        if name.endswith(".pdf"):
+            return "PDF"
+        if name.endswith((".doc", ".docx")):
+            return "DOC"
+        if name.endswith((".xls", ".xlsx")):
+            return "XLS"
+        if "." in name:
+            return name.rsplit(".", 1)[-1].upper()
+        return "File"
+
+
+class ProductSpecification(models.Model):
+    product = models.ForeignKey(Product, related_name="specifications", on_delete=models.CASCADE)
+    label = models.CharField("Property", max_length=120)
+    value = models.CharField(max_length=400)
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["sort_order", "id"]
+
+    def __str__(self):
+        return f"{self.label}: {self.value}"
+

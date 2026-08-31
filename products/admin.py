@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Category, Product, ProductDocument, ProductImage
+from .models import Category, Product, ProductDocument, ProductImage, ProductSpecification
 from .resources import CategoryResource, ProductResource
 
 
@@ -24,6 +24,11 @@ class ProductDocumentInline(admin.TabularInline):
     extra = 1
 
 
+class ProductSpecificationInline(admin.TabularInline):
+    model = ProductSpecification
+    extra = 4
+
+
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     resource_classes = [ProductResource]
@@ -32,7 +37,7 @@ class ProductAdmin(ImportExportModelAdmin):
     search_fields = ("name", "sku", "short_description")
     prepopulated_fields = {"slug": ("name",)}
     filter_horizontal = ("categories",)
-    inlines = [ProductImageInline, ProductDocumentInline]
+    inlines = [ProductImageInline, ProductSpecificationInline, ProductDocumentInline]
     fieldsets = (
         (None, {"fields": ("sku", "name", "slug", "categories")}),
         ("Content", {"fields": ("short_description", "full_description", "technical_text")}),

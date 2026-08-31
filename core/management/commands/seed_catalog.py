@@ -6,7 +6,7 @@ from django.db.utils import OperationalError, ProgrammingError
 from core.local_schema import catalog_schema_is_current, rebuild_sqlite_catalog_tables
 from core.menu import MEGA_COLUMNS
 from pages.models import Page, Project, Service
-from products.models import Category, Product
+from products.models import Category, Product, ProductSpecification
 
 
 PAGE_DEFAULTS = [
@@ -277,6 +277,15 @@ class Command(BaseCommand):
         if product_created:
             product.categories.set(
                 Category.objects.filter(slug__in=["polycarbonate", "building-architecture"])
+            )
+        if not product.specifications.exists():
+            ProductSpecification.objects.bulk_create(
+                [
+                    ProductSpecification(product=product, label="Thickness", value="16 mm", sort_order=10),
+                    ProductSpecification(product=product, label="Structure", value="Multiwall", sort_order=20),
+                    ProductSpecification(product=product, label="UV protection", value="Outer face", sort_order=30),
+                    ProductSpecification(product=product, label="Use", value="Greenhouse roofs and industrial façades", sort_order=40),
+                ]
             )
 
         return {
