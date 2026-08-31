@@ -144,12 +144,14 @@ a {
     background: var(--navy-deep);
 }
 
-.header-cta {
+.header-cta,
+.site-nav .header-cta {
     background: var(--white);
     color: var(--navy);
 }
 
-.header-cta:hover {
+.header-cta:hover,
+.site-nav .header-cta:hover {
     background: var(--mist);
     color: var(--navy-deep);
 }
