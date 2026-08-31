@@ -220,9 +220,16 @@ class Command(BaseCommand):
     def seed_pages(self):
         created = 0
         for data in PAGE_DEFAULTS:
-            _, was_created = Page.objects.get_or_create(slug=data["slug"], defaults=data)
+            page, was_created = Page.objects.get_or_create(slug=data["slug"], defaults=data)
             if was_created:
                 created += 1
+                continue
+            lead = page.lead or ""
+            if "will be added after the catalog" in lead or "future quote basket" in lead:
+                page.lead = data["lead"]
+                page.seo_description = data["seo_description"]
+                page.body = data.get("body", "")
+                page.save(update_fields=["lead", "seo_description", "body"])
         return created
 
     def seed_demo(self):

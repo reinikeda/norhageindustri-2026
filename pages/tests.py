@@ -1,3 +1,4 @@
+from django.core.management import call_command
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -157,6 +158,19 @@ class CmsPageTests(TestCase):
         self.assertContains(self.client.get(service.get_absolute_url()), service.summary)
         self.assertContains(self.client.get(reverse("pages:cases")), project.title)
         self.assertContains(self.client.get(project.get_absolute_url()), project.summary)
+
+    def test_seed_updates_old_quote_placeholder_copy(self):
+        Page.objects.create(
+            slug="quote",
+            title="Request a quote",
+            heading="Request a quote",
+            lead="The quote form with product quantities will be added after the catalog. For now, email us.",
+            is_published=True,
+        )
+        call_command("seed_catalog", verbosity=0)
+        page = Page.objects.get(slug="quote")
+        self.assertNotIn("will be added after the catalog", page.lead)
+        self.assertIn("quantities, and destination", page.lead)
 
     def test_home_shows_featured_products(self):
         product = Product.objects.create(
