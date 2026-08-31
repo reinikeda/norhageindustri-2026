@@ -1,0 +1,85 @@
+title,slug,summary,body,country,location,year,work_type,dimensions,industry,is_published,sort_order
+Fire-damaged industrial greenhouse renovation,fire-damaged-industrial-greenhouse-renovation,"Complete renovation of a 16 × 40 m industrial greenhouse damaged by fire. The structure, glazing, and ventilation were restored so the facility could return to production.","Project snapshot
+- Size: 16 m × 40 m (640 m²)
+- Location: Client site (Mellanå), Sweden
+- Delivery: Assessment, selective demolition, engineered repairs, recladding, ventilation refurbishment, and commissioning
+
+Scope of works
+- Inspection for heat and fire damage across the frame
+- Safe removal of damaged polycarbonate from roof, walls, and roof vents
+- Supply and installation of new 16 mm multiwall polycarbonate panels, flashings, and fasteners
+- Installation of a large gate and a glazed service door
+- Commissioning, testing, and pre-handover adjustments
+
+Engineering
+- Reinforced main vertical load-bearing columns
+- Rebuilt damaged wall sections with 60×60 aluminium profiles
+- Reused undamaged vertical profiles to reduce waste
+
+Ventilation
+- Inspected roof ventilation mechanisms and tested motor operation
+- Delivered a new control box for ventilation management
+- Replaced degraded polycarbonate with 16 mm multiwall sheeting
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch. Photos are uploaded in admin, not in this CSV.",Sweden,Mellanå,2026,renovation,16 × 40 m (640 m²),Horticulture,1,10
+Reo industrial greenhouse installation,reo-industrial-greenhouse-installation,"End-to-end installation of a 2,250 m² Reo industrial greenhouse at the Mellanå site, from structure to climate, heating, and irrigation commissioning.","Project at a glance
+- Size: 25 m × 90 m (2,250 m²)
+- Model: Reo Industrial (plastic-covered)
+- Scope: Complete site installation of structure, systems, and automation
+
+Integrated technical solutions
+- Reinforced framework: arches, end walls, and stabilization for high-capacity loads
+- Double-layer plastic covering, tensioned to limit air leakage
+- Side and top opening mechanisms with industrial gear motors
+- Weather station and sensors for temperature, humidity, and ventilation
+- Heating and air circulation for uniform growing conditions
+- Irrigation boom and distribution pipework
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",Sweden,Mellanå,2026,assembly,"25 × 90 m (2,250 m²)",Horticulture,1,20
+Atlantic Evoluzione industrial greenhouse,atlantic-evoluzione-industrial-greenhouse,"Turnkey supply and on-site installation of a 1,050 m² Atlantic Evoluzione industrial greenhouse with a reinforced galvanized structure and automated climate control.","Project at a glance
+- Growing area: 1,050 m² (10.5 m × 100 m)
+- Scope: Complete turnkey supply and technical on-site installation
+- Systems: Reinforced steel frame, double-inflated roof, automated climate and heating
+
+Engineering notes from the live page
+- 3.0 m tie-rod height; 5.5 m total height; 2 m arch spacing
+- Hot-dip galvanized columns and trusses
+- Double-inflated roof film and 10 mm UV-treated polycarbonate front walls
+- Side openings driven by mechanical gear motors
+- Weather station with wind and rain sensors
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",,,2026,assembly,"10.5 × 100 m (1,050 m²)",Horticulture,1,30
+Façade systems projects,facade-systems-projects,"A selection of façade installations using copper, HPL, fibre cement, aluminium composite, and polycarbonate systems for commercial and industrial buildings.","We have implemented façade systems across a range of buildings, including TECU copper sheets, HPL panels (Abet Laminati), fibre cement panels (Equitone), aluminium composite panels (Albond), and polycarbonate systems.
+
+The live WordPress page grouped several façades into one story. For the Django catalog, keep this as a summary case until individual jobs can be split out with their own country, year, and photos.
+
+Test copy scraped from https://norhageindustri.com/project/facade-systems-projects/. Rewrite before launch.",,,2024,facade,,Building & architecture,1,40
+School renovation in Rykkinn,school-renovation-rykkin,"Renovation of exterior wall and roof structures at a school in Rykkinn, Norway, with weather-resistant and thermally efficient materials.","This project involved the renovation of exterior wall and roof structures at a school facility in Rykkinn, Norway. Durable construction materials were specified for weather resistance, thermal efficiency, and aesthetic integration.
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch. Add the photo gallery in admin.",Norway,Rykkinn,2023,renovation,,Education,1,50
+Single-span greenhouse assembly,single-span-greenhouse-assembly,"Installation of two Easy Art single-span industrial greenhouses in Norway, each 10 × 100 m, with plastic film covering and an irrigation system.","Norhage Industri completed the installation of two modern industrial greenhouses using the Easy Art single-span system. Each structure measures 10 × 100 m and is covered with plastic film. An irrigation system was installed to support cultivation.
+
+Location: Norway
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",Norway,,2023,assembly,"Two halls, 10 × 100 m each",Horticulture,1,60
+Polycarbonate roof renovation in Stavanger,polycarbonate-roof-stavanger,"Replacement of an old channel-polycarbonate roof in Stavanger with a new durable system, from assessment through installation.","Norhage Industri completed a polycarbonate roof renovation in Stavanger, replacing an old channel polycarbonate structure with a new system after a detailed assessment.
+
+Location: Stavanger, Norway
+Year: 2024
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",Norway,Stavanger,2024,renovation,,Building & architecture,1,70
+"Greenhouse renovation in Makan, Sweden",greenhouse-renovation-makan,"Full renovation of a 40-year-old glass greenhouse in Sweden: dismantled to the foundation, new steel frame on the original base, polycarbonate glazing, and new gutters.","Norhage Industri completed a full renovation of an aging 40-year-old glass greenhouse in Sweden. The old structure was dismantled down to the foundation and replaced with a modern steel frame fitted to the original base. Durable polycarbonate glazing was installed for insulation and lower maintenance, with new gutters for long-lasting protection.
+
+The original greenhouse was about 26 m long and 4 m wide and stood on a larger property outside Stockholm. The live page includes a long customer letter; keep a short case here and rewrite with approved client wording later.
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",Sweden,Outside Stockholm,2023,renovation,26 × 4 m,Horticulture,1,80
+Polycarbonate greenhouse renovation in Varberg,polycarbonate-greenhouse-varberg,"Renovation and profile replacement on a polycarbonate greenhouse at Warberg Tomateria in Varberg, Sweden.","Norhage Industri completed a renovation at Warberg Tomateria, where an aging polycarbonate greenhouse was upgraded with new profiles and structural improvements.
+
+Location: Varberg, Sweden
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",Sweden,Varberg,2023,renovation,,Horticulture,1,90
+Greenhouse plastic film renovation,greenhouse-plastic-film-renovation,"Replacement of old greenhouse plastic film, including groundwork, film removal, rear-section repairs, and installation of a new cover.","Norhage Industri completed a greenhouse renovation focused on replacing old plastic film. The work included groundwork, removal of the existing film, renovation of the rear section, and installation of a new cover.
+
+The live WordPress page does not name the country. Add country and year when the case is rewritten.
+
+Test copy scraped from the live English WordPress project page. Rewrite before launch.",,,2023,renovation,,Horticulture,1,100

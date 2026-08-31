@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Page, Project, Service
+from .models import Page, Project, ProjectImage, Service
 from .resources import PageResource, ProjectResource, ServiceResource
 
 
@@ -29,10 +29,33 @@ class ServiceAdmin(ImportExportModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class ProjectImageInline(admin.TabularInline):
+    model = ProjectImage
+    extra = 1
+
+
 @admin.register(Project)
 class ProjectAdmin(ImportExportModelAdmin):
     resource_classes = [ProjectResource]
-    list_display = ("title", "industry", "is_published", "sort_order")
-    list_filter = ("is_published", "industry")
-    search_fields = ("title", "summary", "industry")
+    list_display = ("title", "country", "year", "work_type", "is_published", "sort_order")
+    list_filter = ("is_published", "work_type", "country", "year")
+    search_fields = ("title", "summary", "country", "location", "industry")
     prepopulated_fields = {"slug": ("title",)}
+    inlines = [ProjectImageInline]
+    fieldsets = (
+        (None, {"fields": ("title", "slug", "summary", "body", "image")}),
+        (
+            "Facts",
+            {
+                "fields": (
+                    "work_type",
+                    "country",
+                    "location",
+                    "year",
+                    "dimensions",
+                    "industry",
+                )
+            },
+        ),
+        ("Publishing", {"fields": ("is_published", "sort_order")}),
+    )

@@ -9,6 +9,7 @@ REQUIRED_COLUMNS = {
     "pages_page": ("created_at", "updated_at", "slug", "title", "heading"),
     "products_category": ("name", "slug", "group"),
     "products_product": ("sku", "name", "slug"),
+    "pages_project": ("country", "year", "work_type", "dimensions"),
 }
 
 

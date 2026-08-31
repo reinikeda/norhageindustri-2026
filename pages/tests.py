@@ -186,6 +186,60 @@ class CmsPageTests(TestCase):
         self.assertNotContains(response, "Commercial greenhouses")
 
 
+class ProjectCaseTests(TestCase):
+    def setUp(self):
+        self.norway = Project.objects.create(
+            title="Stavanger roof renovation",
+            slug="stavanger-roof-renovation",
+            summary="Channel polycarbonate roof replacement.",
+            body="Old channel polycarbonate was removed and a new roof was installed.",
+            country="Norway",
+            location="Stavanger",
+            year=2024,
+            work_type=Project.WorkType.RENOVATION,
+            dimensions="Quoted on site",
+            is_published=True,
+        )
+        self.sweden = Project.objects.create(
+            title="Mellanå greenhouse assembly",
+            slug="mellana-greenhouse-assembly",
+            summary="New industrial greenhouse hall.",
+            country="Sweden",
+            year=2026,
+            work_type=Project.WorkType.ASSEMBLY,
+            dimensions="25 × 90 m (2,250 m²)",
+            is_published=True,
+        )
+
+    def test_list_shows_facts_and_filters(self):
+        response = self.client.get(reverse("pages:cases"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.norway.title)
+        self.assertContains(response, "Norway")
+        self.assertContains(response, "2024")
+        self.assertContains(response, "Renovation")
+        self.assertContains(response, "2 published projects")
+        self.assertContains(response, 'name="type"')
+        self.assertContains(response, 'rel="canonical"')
+
+    def test_filter_by_country_and_type(self):
+        norway = self.client.get(reverse("pages:cases"), {"country": "Norway"})
+        self.assertContains(norway, self.norway.title)
+        self.assertNotContains(norway, self.sweden.title)
+        self.assertContains(norway, "noindex")
+        renovation = self.client.get(reverse("pages:cases"), {"type": "renovation"})
+        self.assertContains(renovation, self.norway.title)
+        self.assertNotContains(renovation, self.sweden.title)
+
+    def test_detail_shows_fact_table(self):
+        response = self.client.get(self.norway.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Stavanger")
+        self.assertContains(response, "What was done")
+        self.assertContains(response, "Related projects")
+        self.assertContains(response, self.sweden.title)
+
+
 class ExamplePagesCsvTests(TestCase):
     def test_live_site_pages_csv_imports(self):
         call_command("import_pages_csv")
@@ -211,4 +265,17 @@ class ExamplePagesCsvTests(TestCase):
         self.assertIn("personal data", privacy.lead.lower())
         response = self.client.get(reverse("pages:about"))
         self.assertContains(response, "Our Story")
+
+
+class ExampleProjectsCsvTests(TestCase):
+    def test_live_site_projects_csv_imports(self):
+        call_command("import_projects_csv")
+        self.assertEqual(Project.objects.count(), 10)
+        fire = Project.objects.get(slug="fire-damaged-industrial-greenhouse-renovation")
+        self.assertEqual(fire.country, "Sweden")
+        self.assertEqual(fire.work_type, Project.WorkType.RENOVATION)
+        self.assertIn("640 m²", fire.dimensions)
+        assembly = self.client.get(reverse("pages:cases"), {"type": "assembly"})
+        self.assertContains(assembly, "Reo industrial greenhouse")
+        self.assertNotContains(assembly, fire.title)
 

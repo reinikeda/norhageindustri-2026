@@ -220,21 +220,117 @@ class ProjectListView(ListView):
     template_name = "pages/project_list.html"
     context_object_name = "projects"
 
+    def selected_filters(self):
+        work_type = self.request.GET.get("type", "").strip()
+        if work_type not in Project.WorkType.values:
+            work_type = ""
+        year_raw = self.request.GET.get("year", "").strip()
+        year = year_raw if year_raw.isdigit() else ""
+        country = self.request.GET.get("country", "").strip()
+        return {"type": work_type, "year": year, "country": country}
+
     def get_queryset(self):
-        return Project.objects.filter(is_published=True)
+        queryset = Project.objects.filter(is_published=True)
+        selected = self.selected_filters()
+        if selected["type"]:
+            queryset = queryset.filter(work_type=selected["type"])
+        if selected["year"]:
+            queryset = queryset.filter(year=int(selected["year"]))
+        if selected["country"]:
+            queryset = queryset.filter(country__iexact=selected["country"])
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = published_page("cases")
-        context["page"] = page
-        context["title"] = page.title if page else "Cases & projects"
-        context["heading"] = page.heading if page else "Cases & projects"
-        context["lead"] = (
+        selected = self.selected_filters()
+        published = Project.objects.filter(is_published=True)
+        countries = list(
+            published.exclude(country="").order_by("country").values_list("country", flat=True).distinct()
+        )
+        years = list(
+            published.exclude(year=None).order_by("-year").values_list("year", flat=True).distinct()
+        )
+        used_types = set(published.exclude(work_type="").values_list("work_type", flat=True))
+        work_types = [
+            (value, label) for value, label in Project.WorkType.choices if value in used_types
+        ]
+        heading = page.heading if page else "Cases & projects"
+        lead = (
             page.lead
             if page
             else "Selected industrial projects delivered with Norhage Industri materials and systems."
         )
-        context["meta_description"] = context["lead"][:160]
+        is_filtered = any(selected.values())
+        canonical = self.request.build_absolute_uri("/cases/")
+        breadcrumbs = [
+            {"label": "Home", "url": "/"},
+            {"label": heading, "url": ""},
+        ]
+        item_list = [
+            {
+                "@type": "ListItem",
+                "position": index,
+                "url": self.request.build_absolute_uri(item.get_absolute_url()),
+                "name": item.title,
+            }
+            for index, item in enumerate(context["projects"][:20], start=1)
+        ]
+        json_ld = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": self.request.build_absolute_uri("/"),
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": heading,
+                            "item": canonical,
+                        },
+                    ],
+                },
+                {
+                    "@type": "CollectionPage",
+                    "@id": canonical + "#webpage",
+                    "name": heading,
+                    "description": lead[:160],
+                    "url": canonical,
+                    "mainEntity": {
+                        "@type": "ItemList",
+                        "numberOfItems": len(context["projects"]),
+                        "itemListElement": item_list,
+                    },
+                },
+            ],
+        }
+        context.update(
+            {
+                "page": page,
+                "title": page.seo_title or page.title if page else "Cases & projects",
+                "heading": heading,
+                "lead": lead,
+                "meta_description": (page.seo_description if page and page.seo_description else lead[:160]),
+                "canonical_url": canonical,
+                "robots": "noindex, follow" if is_filtered else "index, follow",
+                "json_ld": json.dumps(json_ld, ensure_ascii=False)
+                .replace("<", "\\u003c")
+                .replace(">", "\\u003e"),
+                "breadcrumbs": breadcrumbs,
+                "selected": selected,
+                "filter_countries": countries,
+                "filter_years": years,
+                "filter_types": work_types,
+                "is_filtered": is_filtered,
+                "result_count": len(context["projects"]),
+            }
+        )
         return context
 
 
@@ -243,10 +339,65 @@ class ProjectDetailView(DetailView):
     context_object_name = "project"
 
     def get_queryset(self):
-        return Project.objects.filter(is_published=True)
+        return Project.objects.filter(is_published=True).prefetch_related("images")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = self.object.title
-        context["meta_description"] = self.object.summary[:160]
+        project = self.object
+        related = list(
+            Project.objects.filter(is_published=True, work_type=project.work_type)
+            .exclude(pk=project.pk)
+            .prefetch_related("images")[:3]
+        ) if project.work_type else []
+        if len(related) < 3:
+            extra = (
+                Project.objects.filter(is_published=True)
+                .exclude(pk=project.pk)
+                .exclude(pk__in=[item.pk for item in related])
+                .prefetch_related("images")[: 3 - len(related)]
+            )
+            related.extend(extra)
+        canonical = self.request.build_absolute_uri(project.get_absolute_url())
+        description = (project.summary or project.title)[:160]
+        breadcrumbs = [
+            {"label": "Home", "url": "/"},
+            {"label": "Cases & projects", "url": "/cases/"},
+            {"label": project.title, "url": ""},
+        ]
+        json_ld = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": index,
+                            "name": crumb["label"],
+                            "item": self.request.build_absolute_uri(crumb["url"] or project.get_absolute_url()),
+                        }
+                        for index, crumb in enumerate(breadcrumbs, start=1)
+                    ],
+                },
+                {
+                    "@type": "CreativeWork",
+                    "name": project.title,
+                    "description": description,
+                    "url": canonical,
+                    "inLanguage": "en-GB",
+                },
+            ],
+        }
+        context.update(
+            {
+                "title": project.title,
+                "meta_description": description,
+                "canonical_url": canonical,
+                "json_ld": json.dumps(json_ld, ensure_ascii=False)
+                .replace("<", "\\u003c")
+                .replace(">", "\\u003e"),
+                "breadcrumbs": breadcrumbs,
+                "related_projects": related,
+            }
+        )
         return context

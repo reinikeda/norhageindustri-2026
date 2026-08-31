@@ -55,15 +55,17 @@ CSV import/export is on those same admin screens (Import / Export). Product cate
 
 - `docs/examples/products.csv` — 149 products (guessed categories, no images)
 - `docs/examples/pages.csv` — Home, About, Wholesale, Contact, Services, Cases, Terms, Privacy, Cookies (rewrite before launch)
+- `docs/examples/projects.csv` — 10 English cases scraped from norhageindustri.com/projects/ (no photos; rewrite before launch)
 
 After `seed_catalog`:
 
 ```bash
 python manage.py import_products_csv
 python manage.py import_pages_csv
+python manage.py import_projects_csv
 ```
 
-Or in admin: Products / Pages → Import. Re-importing updates by SKU or slug.
+Or in admin: Products / Pages / Projects → Import. Re-importing updates by SKU or slug. Project photos are uploaded in admin, not in CSV.
 
 Public product URLs use the SKU: `/products/<sku>/`.
 

@@ -931,6 +931,69 @@ h1 {
     align-items: center;
 }
 
+form.project-filters {
+    display: block;
+    max-width: none;
+    margin: 1.4rem 0 0.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--mist);
+}
+
+.project-filters-label {
+    margin: 0 0 0.7rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.project-filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+    align-items: end;
+}
+
+.project-filters-row label {
+    min-width: 10rem;
+}
+
+.project-count {
+    margin: 0.6rem 0 0;
+}
+
+.project-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.55rem 0 0.35rem;
+}
+
+.project-chips li {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--ice);
+    color: var(--navy);
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+}
+
+.project-facts {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.project-card-grid {
+    margin-top: 1rem;
+}
+
 .contact-list {
     list-style: none;
     padding: 0;

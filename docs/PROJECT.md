@@ -57,6 +57,7 @@ Must ship:
 - Product detail pages
 - No public prices
 - Ask-for-a-quote form, including selected products and quantities
+- Cases & projects with country, year, work type, size, and a photo gallery
 - Django admin for pages, categories, products, quotes
 - Email notification to sales + confirmation to the sender
 - Basic SEO (titles, meta descriptions, clean URLs, sitemap, robots)
@@ -70,7 +71,7 @@ Must not ship in MVP:
 - CRM
 - Per-product attribute engine
 - Formal PDF quotations
-- News or case-study apps (the current Projects page can stay a simple static/admin page)
+- News app
 
 ## Post-MVP
 
@@ -81,7 +82,7 @@ In this order, only after English is live:
 3. Remaining language domains
 4. Manual export/import of translation drafts, then an API for the external writing tool
 5. Company/contact records if quote volume needs it
-6. News and project/case-study apps
+6. News app
 7. Quote PDFs, customer accounts, CRM — only if sales actually needs them
 
 ## Legal pages (English vs German)

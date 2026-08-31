@@ -42,7 +42,16 @@ class ProjectResource(resources.ModelResource):
             "slug",
             "summary",
             "body",
+            "country",
+            "location",
+            "year",
+            "work_type",
+            "dimensions",
             "industry",
             "is_published",
             "sort_order",
         )
+
+    def before_import_row(self, row, **kwargs):
+        year = str(row.get("year") or "").strip()
+        row["year"] = int(year) if year.isdigit() else None
