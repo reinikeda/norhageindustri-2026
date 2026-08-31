@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management import call_command
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -183,4 +184,31 @@ class CmsPageTests(TestCase):
         response = self.client.get(reverse("pages:home"))
         self.assertContains(response, product.name)
         self.assertNotContains(response, "Commercial greenhouses")
+
+
+class ExamplePagesCsvTests(TestCase):
+    def test_live_site_pages_csv_imports(self):
+        call_command("import_pages_csv")
+        slugs = {
+            "home",
+            "solutions",
+            "about",
+            "wholesale",
+            "contact",
+            "quote",
+            "services",
+            "cases",
+            "terms",
+            "privacy",
+            "cookies",
+        }
+        self.assertEqual(set(Page.objects.values_list("slug", flat=True)), slugs)
+        about = Page.objects.get(slug="about")
+        self.assertIn("TEHI AS", about.lead)
+        terms = Page.objects.get(slug="terms")
+        self.assertIn("Norwegian law", terms.body)
+        privacy = Page.objects.get(slug="privacy")
+        self.assertIn("personal data", privacy.lead.lower())
+        response = self.client.get(reverse("pages:about"))
+        self.assertContains(response, "Our Story")
 

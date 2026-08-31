@@ -52,6 +52,7 @@ Must ship:
 
 - English website on norhageindustri.com
 - Homepage and informational pages (About, Services, Contact, Terms, Privacy, Cookies)
+- Company identity on Contact/footer (legal name, address, email, phone; add organisation number when rewriting)
 - Product categories and product catalog
 - Product detail pages
 - No public prices
@@ -82,6 +83,25 @@ In this order, only after English is live:
 5. Company/contact records if quote volume needs it
 6. News and project/case-study apps
 7. Quote PDFs, customer accounts, CRM — only if sales actually needs them
+
+## Legal pages (English vs German)
+
+The English site (TEHI AS, Norway) needs:
+
+| Page | Why |
+|---|---|
+| Privacy | GDPR / Norwegian personal data rules. Quote and contact forms store name, company, email, phone. |
+| Cookies | Required if you use cookies. MVP session cookie can stay a short page; a consent banner is only needed when analytics or ads are added. |
+| Terms | Not a statutory “must have” for a catalog without checkout, but expected. Governs use of the site and inquiries. |
+| Contact / About | Company identification: legal name, geographic address, email, phone. Add the Norwegian organisation number when the copy is rewritten. |
+
+**Imprint / Impressum is not an English-page requirement.** It is a German statutory page (DDG, formerly TMG). The live German site already has it at [norhageindustri.de/impressum](https://norhageindustri.de/impressum/) for **Tehi UG** in Wiesbaden — a different legal entity than TEHI AS. Do not copy that text onto norhageindustri.com. Add Impressum when the German domain is rebuilt.
+
+Not needed for this B2B catalog (no webshop checkout): returns, shipping policy, cancellation form, consumer ADR page.
+
+Live WordPress also has Our Partners and Clients Feedback. Those are marketing pages, not legal ones. Partners can wait; testimonials already appear on the homepage.
+
+Test copy scraped from the English WordPress pages is in `docs/examples/pages.csv`. Rewrite before launch.
 
 ## Product categories (from the live sites)
 
