@@ -11,3 +11,8 @@ class AccountsTests(TestCase):
         user = User.objects.create_user(username="editor", password="test-pass-123")
         self.assertTrue(user.check_password("test-pass-123"))
         self.assertFalse(user.is_superuser)
+
+    def test_admin_index_requires_login(self):
+        response = self.client.get("/admin/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/admin/login/", response["Location"])

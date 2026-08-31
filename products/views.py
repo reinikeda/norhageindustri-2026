@@ -99,7 +99,7 @@ class ProductDetailView(DetailView):
                 "canonical_url": canonical,
                 "og_type": "product",
                 "og_image": image_urls[0] if image_urls else "",
-                "json_ld": json.dumps(json_ld, ensure_ascii=False),
+                "json_ld": json.dumps(json_ld, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e"),
                 "breadcrumbs": breadcrumbs,
                 "spec_rows": spec_rows,
                 "spec_notes": spec_notes,

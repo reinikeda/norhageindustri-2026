@@ -68,4 +68,4 @@ def site_graph(request):
 
 
 def site_json_ld(request):
-    return json.dumps(site_graph(request), ensure_ascii=False)
+    return json.dumps(site_graph(request), ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e")

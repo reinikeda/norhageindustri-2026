@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from core.validators import validate_image_file
+
 
 class TimeStamped(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +26,7 @@ class Page(TimeStamped):
     heading = models.CharField(max_length=160)
     lead = models.TextField(blank=True)
     body = models.TextField(blank=True, help_text="Plain text. Line breaks are kept on the website.")
-    image = models.ImageField(upload_to="pages/", blank=True)
+    image = models.ImageField(upload_to="pages/", blank=True, validators=[validate_image_file])
     seo_title = models.CharField(max_length=70, blank=True)
     seo_description = models.CharField(max_length=160, blank=True)
     is_published = models.BooleanField(default=True)
@@ -46,7 +48,7 @@ class Service(TimeStamped):
     slug = models.SlugField(max_length=180, unique=True)
     summary = models.TextField(blank=True)
     body = models.TextField(blank=True)
-    image = models.ImageField(upload_to="services/", blank=True)
+    image = models.ImageField(upload_to="services/", blank=True, validators=[validate_image_file])
     is_published = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
 
@@ -70,7 +72,7 @@ class Project(TimeStamped):
     slug = models.SlugField(max_length=220, unique=True)
     summary = models.TextField(blank=True)
     body = models.TextField(blank=True)
-    image = models.ImageField(upload_to="projects/", blank=True)
+    image = models.ImageField(upload_to="projects/", blank=True, validators=[validate_image_file])
     industry = models.CharField(max_length=120, blank=True)
     is_published = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)

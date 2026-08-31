@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
+from django.core.exceptions import ValidationError
 from django.db import connection
 from django.test import TestCase, TransactionTestCase
 
 from core.local_schema import catalog_schema_is_current
 from core.menu import find_topic
+from core.validators import validate_document_file, validate_image_file
 from pages.models import Page
 from products.models import Category, Product
 
@@ -49,3 +51,22 @@ class RebuildLocalSchemaTests(TransactionTestCase):
         self.assertTrue(Page.objects.filter(slug="about").exists())
         self.assertTrue(Category.objects.filter(slug="polycarbonate").exists())
         self.assertTrue(Product.objects.filter(sku="PC-MW-16").exists())
+
+
+class UploadValidatorTests(TestCase):
+    def test_rejects_executable_as_document(self):
+        class FakeFile:
+            name = "payload.exe"
+            size = 10
+
+        with self.assertRaises(ValidationError):
+            validate_document_file(FakeFile())
+
+    def test_rejects_oversized_image(self):
+        class FakeFile:
+            name = "huge.jpg"
+            size = 20 * 1024 * 1024
+
+        with self.assertRaises(ValidationError):
+            validate_image_file(FakeFile())
+

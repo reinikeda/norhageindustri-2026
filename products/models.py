@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from core.validators import validate_document_file, validate_image_file
+
 
 class Category(models.Model):
     class Group(models.TextChoices):
@@ -21,7 +23,7 @@ class Category(models.Model):
         on_delete=models.CASCADE,
     )
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to="categories/", blank=True)
+    image = models.ImageField(upload_to="categories/", blank=True, validators=[validate_image_file])
     is_active = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
 
@@ -118,7 +120,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
-    file = models.ImageField(upload_to="products/images/")
+    file = models.ImageField(upload_to="products/images/", validators=[validate_image_file])
     alt_text = models.CharField(max_length=160, blank=True)
     sort_order = models.PositiveIntegerField(default=0)
 
@@ -131,7 +133,7 @@ class ProductImage(models.Model):
 
 class ProductDocument(models.Model):
     product = models.ForeignKey(Product, related_name="documents", on_delete=models.CASCADE)
-    file = models.FileField(upload_to="products/documents/")
+    file = models.FileField(upload_to="products/documents/", validators=[validate_document_file])
     title = models.CharField(max_length=160)
     sort_order = models.PositiveIntegerField(default=0)
 

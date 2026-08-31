@@ -178,7 +178,7 @@ class SolutionTopicView(TemplateView):
                 "meta_description": lead[:160],
                 "canonical_url": canonical,
                 "og_type": "website",
-                "json_ld": json.dumps(json_ld, ensure_ascii=False),
+                "json_ld": json.dumps(json_ld, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e"),
                 "heading": heading,
                 "lead": lead,
                 "group_title": group_title,
