@@ -422,6 +422,14 @@ h1 {
     color: #d5e4ee;
 }
 
+.hero-image {
+    width: 100%;
+    max-height: 12rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin: 0.4rem 0 1rem;
+}
+
 .hero-actions {
     display: flex;
     gap: 0.75rem;

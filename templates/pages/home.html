@@ -5,6 +5,9 @@
     <div class="hero-grid">
         <div class="hero-copy">
             <p class="eyebrow">B2B industrial materials</p>
+            {% if page and page.image %}
+                <img class="hero-image" src="{{ page.image.url }}" alt="{{ home_heading|default:page.title }}">
+            {% endif %}
             <h1>{{ home_heading|default:"Industrial greenhouse systems, technical plastics, and façade materials." }}</h1>
             <p class="lead">{{ home_lead|default:"We supply commercial projects across Europe. Browse by industry, material, or system, then ask for a quote — prices are not published on the website." }}</p>
             <div class="hero-actions">
