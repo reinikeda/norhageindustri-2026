@@ -10,11 +10,14 @@ source .venv/bin/activate
 pip install -r requirements/dev.txt
 cp .env.example .env
 python manage.py migrate
+python manage.py seed_catalog --demo
 python manage.py runserver 0.0.0.0:8000
 ```
 
 Default settings module: `config.settings.dev`.
 Custom user: `AUTH_USER_MODEL = accounts.User`. Create it before any other user-related migrations.
+
+Editors add products, services, projects, and page copy in `/admin/`. CSV import is available on those admin screens. Product CSV `categories` is a `|`-separated list of category slugs. Images are uploaded in admin.
 
 ## Rules
 

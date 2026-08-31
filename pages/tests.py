@@ -2,6 +2,8 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from core.menu import find_topic
+from pages.models import Page, Project, Service
+from products.models import Product
 
 
 class PagesTests(TestCase):
@@ -38,7 +40,7 @@ class PagesTests(TestCase):
                 self.assertEqual(response.status_code, 200)
 
     def test_old_products_url_redirects_to_solutions(self):
-        response = self.client.get(reverse("pages:products"))
+        response = self.client.get(reverse("products:index"))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], reverse("pages:solutions"))
 
@@ -75,3 +77,79 @@ class MenuTests(TestCase):
         topic = find_topic("industry", "food-manufacturing")
         self.assertEqual(topic["label"], "Food Manufacturing")
         self.assertIsNone(find_topic("industry", "missing"))
+
+
+class CmsPageTests(TestCase):
+    def test_about_uses_published_cms_page(self):
+        Page.objects.create(
+            slug="about",
+            title="About TEHI",
+            heading="About TEHI AS",
+            lead="Edited in admin.",
+            body="Body copy from admin.",
+            is_published=True,
+        )
+        response = self.client.get(reverse("pages:about"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "About TEHI AS")
+        self.assertContains(response, "Edited in admin.")
+        self.assertContains(response, "Body copy from admin.")
+
+    def test_unpublished_cms_page_uses_fallback_copy(self):
+        Page.objects.create(
+            slug="about",
+            title="Hidden",
+            heading="Hidden heading",
+            lead="Should not appear.",
+            is_published=False,
+        )
+        response = self.client.get(reverse("pages:about"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "About Norhage Industri")
+        self.assertNotContains(response, "Hidden heading")
+
+    def test_unpublished_service_and_project_are_404(self):
+        service = Service.objects.create(
+            name="Hidden service",
+            slug="hidden-service",
+            is_published=False,
+        )
+        project = Project.objects.create(
+            title="Hidden project",
+            slug="hidden-project",
+            is_published=False,
+        )
+        self.assertEqual(self.client.get(service.get_absolute_url()).status_code, 404)
+        self.assertEqual(self.client.get(project.get_absolute_url()).status_code, 404)
+
+    def test_published_service_and_project_render(self):
+        service = Service.objects.create(
+            name="Greenhouse assembly",
+            slug="greenhouse-assembly",
+            summary="On-site installation.",
+            is_published=True,
+        )
+        project = Project.objects.create(
+            title="Food greenhouse",
+            slug="food-greenhouse",
+            summary="Cladding package.",
+            industry="Food manufacturing",
+            is_published=True,
+        )
+        self.assertContains(self.client.get(reverse("pages:services")), service.name)
+        self.assertContains(self.client.get(service.get_absolute_url()), service.summary)
+        self.assertContains(self.client.get(reverse("pages:cases")), project.title)
+        self.assertContains(self.client.get(project.get_absolute_url()), project.summary)
+
+    def test_home_shows_featured_products(self):
+        product = Product.objects.create(
+            sku="FEAT-1",
+            name="Featured demo product",
+            short_description="Shown on the homepage.",
+            is_active=True,
+            is_featured=True,
+        )
+        response = self.client.get(reverse("pages:home"))
+        self.assertContains(response, product.name)
+        self.assertNotContains(response, "Commercial greenhouses")
+

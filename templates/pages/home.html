@@ -5,8 +5,8 @@
     <div class="hero-grid">
         <div class="hero-copy">
             <p class="eyebrow">B2B industrial materials</p>
-            <h1>Industrial greenhouse systems, technical plastics, and façade materials.</h1>
-            <p class="lead">We supply commercial projects across Europe. Browse by industry, material, or system, then ask for a quote — prices are not published on the website.</p>
+            <h1>{{ home_heading|default:"Industrial greenhouse systems, technical plastics, and façade materials." }}</h1>
+            <p class="lead">{{ home_lead|default:"We supply commercial projects across Europe. Browse by industry, material, or system, then ask for a quote — prices are not published on the website." }}</p>
             <div class="hero-actions">
                 <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
                 <a class="button button-ghost" href="{% url 'pages:solutions' %}">View solutions</a>
@@ -50,25 +50,37 @@
     <div class="section-heading">
         <p class="eyebrow">Catalog</p>
         <h2>Product groups</h2>
-        <p class="section-intro">The full catalog with SKUs and documents will be added next. These groups already have topic pages from the header menu.</p>
+        <p class="section-intro">Browse published products and topic pages from the header menu. Prices are quoted per request.</p>
     </div>
     <div class="card-grid">
-        <a class="card card-link" href="{% url 'pages:solution_topic' group='system' slug='turnkey-facilities' %}">
-            <h3>Commercial greenhouses</h3>
-            <p>Robust systems for agricultural and industrial use, including related automation and sealing products.</p>
-        </a>
-        <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='technical-plastics' %}">
-            <h3>Technical plastics</h3>
-            <p>High-performance plastics for demanding applications, including cutting, machining, and bending.</p>
-        </a>
-        <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='polycarbonate' %}">
-            <h3>Polycarbonate sheets</h3>
-            <p>Durable sheeting and façade solutions with matching profiles and sealing tapes.</p>
-        </a>
-        <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='industrial-rubbers-mats' %}">
-            <h3>Rubber, profiles, and fasteners</h3>
-            <p>Construction and installation materials supplied for project quantities, quoted per request.</p>
-        </a>
+        {% if featured_products %}
+            {% for product in featured_products %}
+                <a class="card card-link" href="{{ product.get_absolute_url }}">
+                    {% if product.main_image %}
+                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.short_description|truncatewords:28 }}</p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <a class="card card-link" href="{% url 'pages:solution_topic' group='system' slug='turnkey-facilities' %}">
+                <h3>Commercial greenhouses</h3>
+                <p>Robust systems for agricultural and industrial use, including related automation and sealing products.</p>
+            </a>
+            <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='technical-plastics' %}">
+                <h3>Technical plastics</h3>
+                <p>High-performance plastics for demanding applications, including cutting, machining, and bending.</p>
+            </a>
+            <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='polycarbonate' %}">
+                <h3>Polycarbonate sheets</h3>
+                <p>Durable sheeting and façade solutions with matching profiles and sealing tapes.</p>
+            </a>
+            <a class="card card-link" href="{% url 'pages:solution_topic' group='material' slug='industrial-rubbers-mats' %}">
+                <h3>Rubber, profiles, and fasteners</h3>
+                <p>Construction and installation materials supplied for project quantities, quoted per request.</p>
+            </a>
+        {% endif %}
     </div>
 </section>
 
@@ -78,14 +90,25 @@
         <h2>Services</h2>
     </div>
     <div class="split">
-        <article class="split-card">
-            <h3>Greenhouse assembly and repair</h3>
-            <p>On-site work from installation through maintenance for commercial greenhouse projects.</p>
-        </article>
-        <article class="split-card">
-            <h3>Precision plastics work</h3>
-            <p>Cutting, machining, and bending of technical plastics to project specifications.</p>
-        </article>
+        {% if published_services %}
+            {% for service in published_services %}
+                <article class="split-card">
+                    {% if service.image %}<img src="{{ service.image.url }}" alt="{{ service.name }}">{% endif %}
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.summary|truncatewords:28 }}</p>
+                    <p><a class="text-link" href="{{ service.get_absolute_url }}">Read more</a></p>
+                </article>
+            {% endfor %}
+        {% else %}
+            <article class="split-card">
+                <h3>Greenhouse assembly and repair</h3>
+                <p>On-site work from installation through maintenance for commercial greenhouse projects.</p>
+            </article>
+            <article class="split-card">
+                <h3>Precision plastics work</h3>
+                <p>Cutting, machining, and bending of technical plastics to project specifications.</p>
+            </article>
+        {% endif %}
     </div>
     <p><a class="text-link" href="{% url 'pages:services' %}">Read about services</a></p>
 </section>

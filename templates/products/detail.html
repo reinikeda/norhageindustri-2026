@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page product-detail">
+    <p class="eyebrow">SKU {{ product.sku }}</p>
+    <h1>{{ product.name }}</h1>
+    {% if product.images.all %}
+        <div class="product-gallery">
+            {% for image in product.images.all %}
+                <img src="{{ image.file.url }}" alt="{{ image.alt_text|default:product.name }}">
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if product.short_description %}<p class="lead">{{ product.short_description|linebreaksbr }}</p>{% endif %}
+    {% if product.full_description %}<div class="page-body">{{ product.full_description|linebreaks }}</div>{% endif %}
+    {% if product.technical_text %}
+        <h2>Technical information</h2>
+        <div class="page-body">{{ product.technical_text|linebreaks }}</div>
+    {% endif %}
+    {% if product.categories.all %}
+        <h2>Categories</h2>
+        <ul>
+            {% for category in product.categories.all %}
+                <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if product.documents.all %}
+        <h2>Documents</h2>
+        <ul>
+            {% for doc in product.documents.all %}
+                <li><a href="{{ doc.file.url }}">{{ doc.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

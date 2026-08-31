@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    {% if service.image %}<img class="page-image" src="{{ service.image.url }}" alt="{{ service.name }}">{% endif %}
+    <h1>{{ service.name }}</h1>
+    {% if service.summary %}<p class="lead">{{ service.summary|linebreaksbr }}</p>{% endif %}
+    {% if service.body %}<div class="page-body">{{ service.body|linebreaks }}</div>{% endif %}
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

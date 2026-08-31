@@ -16,13 +16,34 @@ python manage.py runserver
 
 Then open http://127.0.0.1:8000/ and the admin at http://127.0.0.1:8000/admin/
 
+After the first migrate, load the menu categories and starter page copy:
+
+```bash
+python manage.py seed_catalog --demo
+```
+
+`--demo` adds a sample product (in two subcategories), two services, and one project. Re-running the command does not overwrite pages you have already edited.
+
+## Editing content
+
+Use Django admin for day-to-day work:
+
+- **Products** — SKU, text, several subcategories, photos, and PDFs
+- **Categories** — industry / material / system topics (and optional child subcategories)
+- **Pages** — heading, lead, body, and image for Home, Solutions, About, Wholesale, Contact, Quote, Services, Cases, Terms, Privacy, Cookies
+- **Services** and **Projects** — list + detail pages
+
+CSV import/export is on those same admin screens (Import / Export). Product categories in a CSV are category slugs separated by `|`. Example files: `docs/examples/products.csv` and `docs/examples/pages.csv`. Images and PDFs are uploaded in admin, not via CSV.
+
+Public product URLs use the SKU: `/products/<sku>/`.
+
 ## What is in this repository
 
 - `config/` — project settings, URLs, WSGI/ASGI
 - `accounts/` — custom user model (staff only, no public signup)
 - `core/` — shared context and error pages
-- `pages/` — homepage and informational pages
-- `products/` — stub for the catalog (next work package)
+- `pages/` — homepage, CMS pages, services, and projects
+- `products/` — categories, products, images, and documents
 - `quotes/` — stub for quote requests (after the catalog)
 - `templates/` and `static/` — public layout
 - `docs/PROJECT.md` — company facts, MVP, open decisions

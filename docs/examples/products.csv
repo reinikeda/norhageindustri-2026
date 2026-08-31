@@ -1,0 +1,3 @@
+sku,name,slug,short_description,full_description,technical_text,seo_title,seo_description,is_active,is_featured,categories
+PC-MW-16,16 mm multiwall polycarbonate sheet,16mm-multiwall-polycarbonate-sheet,Multiwall polycarbonate for greenhouse roofs and industrial façades.,Quoted per project for sheet size UV side and quantity.,Typical thickness 16 mm.,16 mm polycarbonate sheet,Multiwall polycarbonate for industrial greenhouse roofs.,1,1,polycarbonate|building-architecture
+PC-SOLID-4,4 mm solid polycarbonate sheet,4mm-solid-polycarbonate-sheet,Solid polycarbonate for machine guards and glazing.,Quoted per sheet size and quantity.,Typical thickness 4 mm.,4 mm solid polycarbonate,Solid polycarbonate sheets for industrial glazing.,1,0,polycarbonate|food-manufacturing

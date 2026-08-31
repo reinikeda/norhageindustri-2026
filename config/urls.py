@@ -9,6 +9,7 @@ admin.site.index_title = "Site administration"
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
+    path("products/", include("products.urls")),
     path("", include("pages.urls")),
 ]
 

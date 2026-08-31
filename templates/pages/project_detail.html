@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    {% if project.image %}<img class="page-image" src="{{ project.image.url }}" alt="{{ project.title }}">{% endif %}
+    <p class="eyebrow">{{ project.industry|default:"Project" }}</p>
+    <h1>{{ project.title }}</h1>
+    {% if project.summary %}<p class="lead">{{ project.summary|linebreaksbr }}</p>{% endif %}
+    {% if project.body %}<div class="page-body">{{ project.body|linebreaks }}</div>{% endif %}
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

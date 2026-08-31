@@ -2,8 +2,12 @@
 
 {% block content %}
 <article class="page">
-    <h1>Contact</h1>
-    <p class="lead">Use these details for technical questions or a project discussion. A stored contact form will be added with the quote workflow.</p>
+    {% if page and page.image %}
+        <img class="page-image" src="{{ page.image.url }}" alt="{{ heading|default:'Contact' }}">
+    {% endif %}
+    <h1>{{ heading|default:"Contact" }}</h1>
+    <p class="lead">{{ lead|default:"Use these details for technical questions or a project discussion." }}</p>
+    {% if body %}<div class="page-body">{{ body|linebreaks }}</div>{% endif %}
     <ul class="contact-list">
         <li><strong>Email</strong> <a href="mailto:{{ company_email }}">{{ company_email }}</a></li>
         <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a></li>
