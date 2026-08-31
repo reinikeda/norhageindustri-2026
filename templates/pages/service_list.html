@@ -8,6 +8,7 @@
     <h1>{{ heading }}</h1>
     {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
     {% if services %}
+        <h2 class="visually-hidden">Published services</h2>
         <div class="card-grid">
             {% for service in services %}
                 <a class="card card-link" href="{{ service.get_absolute_url }}">

@@ -8,6 +8,7 @@
     <h1>{{ heading }}</h1>
     {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
     {% if projects %}
+        <h2 class="visually-hidden">Published projects</h2>
         <div class="card-grid">
             {% for project in projects %}
                 <a class="card card-link" href="{{ project.get_absolute_url }}">

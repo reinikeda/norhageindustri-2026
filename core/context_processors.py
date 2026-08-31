@@ -1,4 +1,5 @@
 from .menu import MAIN_NAV, MEGA_COLUMNS
+from .seo import absolute_path, default_share_image, site_json_ld
 
 
 def site(request):
@@ -27,4 +28,8 @@ def site(request):
                 "icon": "facebook",
             },
         ],
+        "request_canonical": absolute_path(request),
+        "default_og_image": default_share_image(request),
+        "site_json_ld": site_json_ld(request),
     }
+

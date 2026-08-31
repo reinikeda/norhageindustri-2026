@@ -21,7 +21,10 @@ class HomeView(TemplateView):
         page = published_page("home")
         context["page"] = page
         if page:
-            context["title"] = page.seo_title or page.title
+            if page.seo_title:
+                context["title"] = page.seo_title
+            elif page.title and page.title.lower() != "home":
+                context["title"] = page.title
             context["meta_description"] = page.seo_description or page.lead[:160]
             context["home_heading"] = page.heading
             context["home_lead"] = page.lead
@@ -125,7 +128,7 @@ class SolutionTopicView(TemplateView):
                 Category.objects.filter(group=category.group, is_active=True)
                 .exclude(pk=category.pk)[:8]
             )
-        canonical = self.request.build_absolute_uri()
+        canonical = self.request.build_absolute_uri(self.request.path)
         breadcrumbs = [
             {"label": "Home", "url": "/"},
             {"label": "Solutions & products", "url": "/solutions/"},
@@ -142,15 +145,32 @@ class SolutionTopicView(TemplateView):
         ]
         json_ld = {
             "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": heading,
-            "description": lead[:160],
-            "url": canonical,
-            "mainEntity": {
-                "@type": "ItemList",
-                "numberOfItems": len(products),
-                "itemListElement": item_list,
-            },
+            "@graph": [
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": index,
+                            "name": crumb["label"],
+                            "item": self.request.build_absolute_uri(crumb["url"] or self.request.path),
+                        }
+                        for index, crumb in enumerate(breadcrumbs, start=1)
+                    ],
+                },
+                {
+                    "@type": "CollectionPage",
+                    "@id": canonical + "#webpage",
+                    "name": heading,
+                    "description": lead[:160],
+                    "url": canonical,
+                    "mainEntity": {
+                        "@type": "ItemList",
+                        "numberOfItems": len(products),
+                        "itemListElement": item_list,
+                    },
+                },
+            ],
         }
         context.update(
             {

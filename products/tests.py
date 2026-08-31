@@ -215,6 +215,7 @@ class ProductPageLayoutTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'rel="canonical"')
         self.assertContains(response, "application/ld+json")
+        self.assertContains(response, "Inquire")
         self.assertContains(response, "16 mm multiwall PC sheet")
         self.assertContains(response, "Technical specifications")
         self.assertContains(response, "Fire rating")

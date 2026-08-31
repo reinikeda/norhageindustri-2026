@@ -59,24 +59,34 @@ class ProductDetailView(DetailView):
                             "@type": "ListItem",
                             "position": index,
                             "name": crumb["label"],
-                            **({"item": self.request.build_absolute_uri(crumb["url"])} if crumb["url"] else {}),
+                            "item": self.request.build_absolute_uri(crumb["url"] or product.get_absolute_url()),
                         }
                         for index, crumb in enumerate(breadcrumbs, start=1)
                     ],
                 },
                 {
                     "@type": "Product",
+                    "@id": canonical + "#product",
                     "name": product.name,
                     "sku": product.sku,
                     "mpn": product.sku,
                     "description": description,
                     "brand": {"@type": "Brand", "name": "Norhage Industri"},
                     "url": canonical,
+                    "mainEntityOfPage": {"@id": canonical + "#webpage"},
                     "category": primary.name if primary else "Industrial materials",
                     "additionalProperty": [
                         {"@type": "PropertyValue", "name": label, "value": value}
                         for label, value in spec_rows
                     ],
+                    "offers": {
+                        "@type": "Offer",
+                        "url": canonical,
+                        "availability": "https://schema.org/InStock",
+                        "itemCondition": "https://schema.org/NewCondition",
+                        "businessFunction": "http://purl.org/goodrelations/v1#Inquire",
+                        "eligibleCustomerType": "https://schema.org/Business",
+                    },
                 },
             ],
         }

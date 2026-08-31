@@ -1,19 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}</title>
     <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
-    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}
+    <meta name="robots" content="{{ robots|default:'index, follow' }}">
+    {% if 'noindex' not in robots|default:'' %}
+        <link rel="canonical" href="{{ canonical_url|default:request_canonical }}">
+    {% endif %}
     <meta property="og:locale" content="en_GB">
     <meta property="og:type" content="{{ og_type|default:'website' }}">
     <meta property="og:site_name" content="{{ company_name }}">
     <meta property="og:title" content="{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}">
     <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
-    {% if canonical_url %}<meta property="og:url" content="{{ canonical_url }}">{% endif %}
-    {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+    {% if 'noindex' not in robots|default:'' %}
+        <meta property="og:url" content="{{ canonical_url|default:request_canonical }}">
+    {% endif %}
+    <meta property="og:image" content="{{ og_image|default:default_og_image }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}">
+    <meta name="twitter:description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
+    <meta name="twitter:image" content="{{ og_image|default:default_og_image }}">
+    {% if site_json_ld %}
+    <script type="application/ld+json">{{ site_json_ld|safe }}</script>
+    {% endif %}
     {% if json_ld %}
     <script type="application/ld+json">{{ json_ld|safe }}</script>
     {% endif %}

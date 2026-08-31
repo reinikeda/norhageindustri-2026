@@ -69,6 +69,24 @@ class PagesTests(TestCase):
         response = self.client.get("/this-page-does-not-exist/")
         self.assertEqual(response.status_code, 404)
         self.assertContains(response, "Page not found", status_code=404)
+        self.assertContains(response, "noindex", status_code=404)
+
+    def test_robots_and_sitemap_are_published(self):
+        robots = self.client.get("/robots.txt")
+        self.assertEqual(robots.status_code, 200)
+        self.assertContains(robots, "Sitemap:")
+        self.assertContains(robots, "Disallow: /admin/")
+        sitemap = self.client.get("/sitemap.xml")
+        self.assertEqual(sitemap.status_code, 200)
+        self.assertContains(sitemap, reverse("pages:home"))
+        self.assertContains(sitemap, reverse("pages:solutions"))
+
+    def test_home_has_canonical_and_organization_schema(self):
+        response = self.client.get(reverse("pages:home"))
+        self.assertContains(response, 'rel="canonical"')
+        self.assertContains(response, '"@type": ["Organization", "LocalBusiness"]')
+        self.assertContains(response, "twitter:card")
+        self.assertNotContains(response, ">Home |")
 
 
 class CmsPageTests(TestCase):
