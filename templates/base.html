@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}</title>
     <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>

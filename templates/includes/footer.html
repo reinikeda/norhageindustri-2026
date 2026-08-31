@@ -1,7 +1,10 @@
+{% load static %}
 <footer class="site-footer">
     <div class="footer-inner">
         <div>
-            <p class="footer-brand">{{ company_name }}</p>
+            <a class="footer-logo" href="{% url 'pages:home' %}">
+                <img src="{% static 'img/logo-on-dark.png' %}" alt="Norhage Industri" width="140" height="101">
+            </a>
             <p>{{ company_address }}</p>
             <p><a href="tel:+4794023135">{{ company_phone }}</a></p>
             <p><a href="mailto:{{ company_email }}">{{ company_email }}</a></p>

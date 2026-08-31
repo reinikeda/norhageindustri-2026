@@ -8,6 +8,7 @@ class PagesTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Norhage Industri")
         self.assertContains(response, "Ask for a quote")
+        self.assertContains(response, "logo-on-dark.png")
 
     def test_key_pages_render(self):
         names = [
