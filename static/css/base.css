@@ -138,21 +138,6 @@ a {
 
 .mega-menu {
     display: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    background: var(--white);
-    color: var(--ink);
-    box-shadow: 0 12px 30px rgba(7, 47, 74, 0.18);
-    border-top: 3px solid var(--navy);
-    padding: 1.6rem 0 1.4rem;
-}
-
-.has-mega.is-open .mega-menu,
-.has-mega:hover .mega-menu,
-.has-mega:focus-within .mega-menu {
-    display: block;
 }
 
 .mega-inner {
@@ -219,6 +204,26 @@ a {
 
 .mega-preview li {
     margin: 0.4rem 0;
+}
+
+@media (min-width: 960px) {
+    .mega-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--white);
+        color: var(--ink);
+        box-shadow: 0 12px 30px rgba(7, 47, 74, 0.18);
+        border-top: 3px solid var(--navy);
+        padding: 1.6rem 0 1.4rem;
+    }
+
+    .has-mega.is-open .mega-menu,
+    .has-mega:hover .mega-menu,
+    .has-mega:focus-within .mega-menu {
+        display: block;
+    }
 }
 
 .button {
@@ -491,6 +496,10 @@ select {
         white-space: normal;
     }
 
+    .has-mega {
+        width: 100%;
+    }
+
     .has-mega:hover .mega-menu,
     .has-mega:focus-within .mega-menu {
         display: none;
@@ -498,13 +507,10 @@ select {
 
     .has-mega.is-open .mega-menu {
         display: block;
-    }
-
-    .mega-menu {
         position: static;
+        background: var(--navy-deep);
         box-shadow: none;
         border-top: 0;
-        background: var(--navy-deep);
         padding: 0.4rem 0 0.8rem 0.6rem;
     }
 
