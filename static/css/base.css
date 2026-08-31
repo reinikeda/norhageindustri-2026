@@ -343,6 +343,16 @@ a {
     color: var(--white);
 }
 
+.hero .button-primary {
+    background: var(--white);
+    color: var(--navy);
+}
+
+.hero .button-primary:hover {
+    background: var(--sand);
+    color: var(--navy-deep);
+}
+
 .button-accent {
     background: var(--copper);
     color: var(--white);
