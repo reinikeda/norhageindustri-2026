@@ -8,12 +8,44 @@
             Menu
         </button>
         <nav id="site-nav" class="site-nav" aria-label="Main">
-            <ul>
-                {% for url_name, label in nav_items %}
-                    <li>
-                        {% url url_name as item_url %}
-                        <a href="{{ item_url }}" {% if request.path == item_url %}aria-current="page"{% endif %}>{{ label }}</a>
-                    </li>
+            <ul class="nav-list">
+                {% for item in main_nav %}
+                    {% url item.url_name as item_url %}
+                    {% if item.mega %}
+                        <li class="has-mega">
+                            <a
+                                class="mega-trigger"
+                                href="{{ item_url }}"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                aria-controls="solutions-mega"
+                                {% if request.path == item_url or '/solutions/' in request.path %}aria-current="page"{% endif %}
+                            >{{ item.label }}</a>
+                            <div class="mega-menu" id="solutions-mega">
+                                <div class="mega-inner">
+                                    {% for column in mega_columns %}
+                                        <div class="mega-column">
+                                            <p class="mega-heading">{{ column.title }}</p>
+                                            <ul>
+                                                {% for slug, label in column.topics %}
+                                                    <li>
+                                                        <a href="{% url 'pages:solution_topic' group=column.group slug=slug %}">{{ label }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endfor %}
+                                    <p class="mega-all">
+                                        <a href="{{ item_url }}">View all solutions &amp; products</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ item_url }}" {% if request.path == item_url %}aria-current="page"{% endif %}>{{ item.label }}</a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
             <a class="button button-primary header-cta" href="{% url 'pages:quote' %}">Ask for a quote</a>

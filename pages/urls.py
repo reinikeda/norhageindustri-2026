@@ -1,23 +1,54 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
-from .views import HomeView, SimplePageView
+from .views import HomeView, SimplePageView, SolutionTopicView, SolutionsView
 
 app_name = "pages"
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    path("solutions/", SolutionsView.as_view(), name="solutions"),
+    path(
+        "solutions/<slug:group>/<slug:slug>/",
+        SolutionTopicView.as_view(),
+        name="solution_topic",
+    ),
     path(
         "products/",
+        RedirectView.as_view(pattern_name="pages:solutions", permanent=False),
+        name="products",
+    ),
+    path(
+        "cases/",
         SimplePageView.as_view(
             template_name="pages/placeholder.html",
             extra_context={
-                "title": "Products",
-                "meta_description": "Industrial greenhouses, technical plastics, polycarbonate, and related materials from Norhage Industri.",
-                "heading": "Product catalog",
-                "lead": "The English product catalog will be added next. Until then, request a quote and our team will help you specify materials, quantities, and documents.",
+                "title": "Cases & projects",
+                "meta_description": "Selected industrial projects delivered with Norhage Industri materials and systems.",
+                "heading": "Cases & projects",
+                "lead": "Project stories will be added after the English catalog. Contact us if you need references for a similar industry or system.",
             },
         ),
-        name="products",
+        name="cases",
+    ),
+    path(
+        "wholesale/",
+        SimplePageView.as_view(
+            template_name="pages/simple.html",
+            extra_context={
+                "title": "Wholesale",
+                "meta_description": "Wholesale partnership with Norhage Industri for distributors and professional buyers.",
+                "heading": "Wholesale",
+                "lead": "We supply wholesalers and distributors with industrial materials, greenhouse components, and related systems. Volume pricing is quoted per request.",
+                "sections": [
+                    {
+                        "title": "What partners can request",
+                        "text": "Spec sheets, sample quantities, and project pricing for sealing tapes, vent openers, sheets, and other catalog items.",
+                    },
+                ],
+            },
+        ),
+        name="wholesale",
     ),
     path(
         "services/",

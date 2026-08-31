@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    <h1>Solutions &amp; products</h1>
+    <p class="lead">Browse by industry, material, or system. Product pages with SKUs and documents will be added next. Each topic below already has a page so the header menu can be used now.</p>
+    <div class="mega-preview">
+        {% for column in mega_columns %}
+            <section>
+                <h2>{{ column.title }}</h2>
+                <ul>
+                    {% for slug, label in column.topics %}
+                        <li><a href="{% url 'pages:solution_topic' group=column.group slug=slug %}">{{ label }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endfor %}
+    </div>
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

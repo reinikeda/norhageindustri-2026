@@ -1,3 +1,6 @@
+from .menu import MAIN_NAV, MEGA_COLUMNS
+
+
 def site(request):
     return {
         "company_name": "Norhage Industri",
@@ -5,11 +8,6 @@ def site(request):
         "company_phone": "+47 940 23 135",
         "company_email": "info@norhageindustri.com",
         "company_address": "TEHI AS, Vardheivegen 68, 4340 Bryne, Norway",
-        "nav_items": [
-            ("pages:home", "Home"),
-            ("pages:products", "Products"),
-            ("pages:services", "Services"),
-            ("pages:about", "About"),
-            ("pages:contact", "Contact"),
-        ],
+        "main_nav": MAIN_NAV,
+        "mega_columns": MEGA_COLUMNS,
     }
