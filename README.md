@@ -24,6 +24,24 @@ python manage.py seed_catalog --demo
 
 `--demo` adds a sample product (in two subcategories), two services, and one project. Re-running the command does not overwrite pages you have already edited.
 
+If the homepage or `seed_catalog` fails with `no such column` (for example `pages_page.created_at` or `products_category.name`), the local `db.sqlite3` is from an older schema. Stop the server (`Ctrl+C`), then in PowerShell:
+
+```powershell
+python manage.py rebuild_local_schema
+python manage.py seed_catalog --demo
+python manage.py runserver
+```
+
+That rebuilds only the pages/products tables and **keeps your admin user**. If it still fails, start a new local database:
+
+```powershell
+Remove-Item .\db.sqlite3
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py seed_catalog --demo
+python manage.py runserver
+```
+
 ## Editing content
 
 Use Django admin for day-to-day work:

@@ -1,5 +1,9 @@
-from django.core.management.base import BaseCommand
+from django.core.management import call_command
+from django.core.management.base import BaseCommand, CommandError
+from django.db import connection
+from django.db.utils import OperationalError, ProgrammingError
 
+from core.local_schema import catalog_schema_is_current, rebuild_sqlite_catalog_tables
 from core.menu import MEGA_COLUMNS
 from pages.models import Page, Project, Service
 from products.models import Category, Product
@@ -137,6 +141,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        self.ensure_catalog_schema()
         created_categories = self.seed_categories()
         created_pages = self.seed_pages()
         extra = {"products": 0, "services": 0, "projects": 0}
@@ -155,6 +160,43 @@ class Command(BaseCommand):
                 + "."
             )
         )
+
+    def ensure_catalog_schema(self):
+        try:
+            call_command("migrate", interactive=False, verbosity=0)
+        except (OperationalError, ProgrammingError) as exc:
+            if connection.vendor != "sqlite":
+                raise CommandError(
+                    "The database is missing catalog tables or columns. "
+                    "Run python manage.py migrate."
+                ) from exc
+            self.stdout.write(
+                self.style.WARNING(
+                    "Local database tables are from an older schema. "
+                    "Rebuilding pages and products tables (admin users are kept)."
+                )
+            )
+            rebuild_sqlite_catalog_tables()
+        if catalog_schema_is_current():
+            return
+        if connection.vendor != "sqlite":
+            raise CommandError(
+                "The database is missing catalog columns (for example pages_page.created_at). "
+                "Run python manage.py migrate."
+            )
+        self.stdout.write(
+            self.style.WARNING(
+                "Local database tables are from an older schema. "
+                "Rebuilding pages and products tables (admin users are kept)."
+            )
+        )
+        rebuild_sqlite_catalog_tables()
+        if not catalog_schema_is_current():
+            raise CommandError(
+                "Catalog tables are still missing columns. Stop the server, delete db.sqlite3, "
+                "then run: python manage.py migrate && python manage.py createsuperuser && "
+                "python manage.py seed_catalog --demo"
+            )
 
     def seed_categories(self):
         created = 0

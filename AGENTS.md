@@ -14,6 +14,8 @@ python manage.py seed_catalog --demo
 python manage.py runserver 0.0.0.0:8000
 ```
 
+If a leftover local `db.sqlite3` is missing catalog columns, `seed_catalog` rebuilds the pages/products tables on SQLite and keeps the admin user. `python manage.py rebuild_local_schema` does the same rebuild on its own.
+
 Default settings module: `config.settings.dev`.
 Custom user: `AUTH_USER_MODEL = accounts.User`. Create it before any other user-related migrations.
 

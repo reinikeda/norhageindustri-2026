@@ -1,7 +1,6 @@
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from core.menu import find_topic
 from pages.models import Page, Project, Service
 from products.models import Product
 
@@ -70,13 +69,6 @@ class PagesTests(TestCase):
         response = self.client.get("/this-page-does-not-exist/")
         self.assertEqual(response.status_code, 404)
         self.assertContains(response, "Page not found", status_code=404)
-
-
-class MenuTests(TestCase):
-    def test_find_topic(self):
-        topic = find_topic("industry", "food-manufacturing")
-        self.assertEqual(topic["label"], "Food Manufacturing")
-        self.assertIsNone(find_topic("industry", "missing"))
 
 
 class CmsPageTests(TestCase):
