@@ -15,6 +15,9 @@ class PagesTests(TestCase):
         self.assertContains(response, "By industry")
         self.assertContains(response, "Polycarbonate")
         self.assertContains(response, "Turnkey Facilities")
+        self.assertContains(response, "linkedin.com/company/norhage-industri-norge")
+        self.assertContains(response, "youtube.com/@norhage_industri")
+        self.assertContains(response, "facebook.com/people/Norhage-Industri")
 
     def test_key_pages_render(self):
         names = [
