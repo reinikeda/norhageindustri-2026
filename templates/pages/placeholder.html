@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    <h1>{{ heading }}</h1>
+    <p class="lead">{{ lead }}</p>
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:contact' %}">Contact us</a></p>
+</article>
+{% endblock %}

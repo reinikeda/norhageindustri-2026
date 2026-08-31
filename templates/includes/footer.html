@@ -1,0 +1,27 @@
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div>
+            <p class="footer-brand">{{ company_name }}</p>
+            <p>{{ company_address }}</p>
+            <p><a href="tel:+4794023135">{{ company_phone }}</a></p>
+            <p><a href="mailto:{{ company_email }}">{{ company_email }}</a></p>
+        </div>
+        <nav aria-label="Footer">
+            <ul>
+                <li><a href="{% url 'pages:products' %}">Products</a></li>
+                <li><a href="{% url 'pages:services' %}">Services</a></li>
+                <li><a href="{% url 'pages:about' %}">About</a></li>
+                <li><a href="{% url 'pages:contact' %}">Contact</a></li>
+                <li><a href="{% url 'pages:quote' %}">Ask for a quote</a></li>
+            </ul>
+        </nav>
+        <nav aria-label="Legal">
+            <ul>
+                <li><a href="{% url 'pages:terms' %}">Terms</a></li>
+                <li><a href="{% url 'pages:privacy' %}">Privacy</a></li>
+                <li><a href="{% url 'pages:cookies' %}">Cookies</a></li>
+            </ul>
+        </nav>
+    </div>
+    <p class="footer-note">B2B catalog. Prices are provided on request. Consumer webshops are separate from this site.</p>
+</footer>

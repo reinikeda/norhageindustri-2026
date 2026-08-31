@@ -1,0 +1,13 @@
+"""ASGI config for Norhage Industri."""
+
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+
+from django.core.asgi import get_asgi_application
+
+application = get_asgi_application()

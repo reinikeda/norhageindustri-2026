@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    <h1>Page not found</h1>
+    <p class="lead">That address is not on this website. Check the URL, or go back to the homepage.</p>
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:home' %}">Back to home</a></p>
+</article>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">B2B industrial materials</p>
+        <h1>Industrial greenhouse systems, technical plastics, and façade materials.</h1>
+        <p class="lead">We supply commercial projects across Europe. Browse the catalog, select products, and ask for a quote — prices are not published on the website.</p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+            <a class="button button-secondary" href="{% url 'pages:products' %}">View products</a>
+        </div>
+        <ul class="stats">
+            <li><strong>ISO 9001:2015</strong> quality standard</li>
+            <li><strong>700+</strong> greenhouses built</li>
+            <li><strong>10+</strong> years of experience</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Product groups</h2>
+    <p class="section-intro">The full catalog with SKUs, documents, and unpublished-product control will be added next. These are the groups we already supply.</p>
+    <div class="card-grid">
+        <article class="card">
+            <h3>Commercial greenhouses</h3>
+            <p>Robust systems for agricultural and industrial use, including related automation and sealing products.</p>
+        </article>
+        <article class="card">
+            <h3>Technical plastics</h3>
+            <p>High-performance plastics for demanding applications, including cutting, machining, and bending.</p>
+        </article>
+        <article class="card">
+            <h3>Polycarbonate sheets</h3>
+            <p>Durable sheeting and façade solutions with matching profiles and sealing tapes.</p>
+        </article>
+        <article class="card">
+            <h3>Rubber, profiles, and fasteners</h3>
+            <p>Construction and installation materials supplied for project quantities, quoted per request.</p>
+        </article>
+    </div>
+</section>
+
+<section class="section section-muted">
+    <h2>Services</h2>
+    <div class="split">
+        <div>
+            <h3>Greenhouse assembly and repair</h3>
+            <p>On-site work from installation through maintenance for commercial greenhouse projects.</p>
+        </div>
+        <div>
+            <h3>Precision plastics work</h3>
+            <p>Cutting, machining, and bending of technical plastics to project specifications.</p>
+        </div>
+    </div>
+    <p><a class="text-link" href="{% url 'pages:services' %}">Read about services</a></p>
+</section>
+
+<section class="section cta-band">
+    <h2>Need a quote for a project?</h2>
+    <p>Tell us the products, quantities, and destination. Sales replies from {{ company_email }}.</p>
+    <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+</section>
+{% endblock %}
