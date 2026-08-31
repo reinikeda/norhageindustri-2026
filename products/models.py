@@ -96,17 +96,24 @@ class Product(models.Model):
         return images[0].file if images else None
 
     def primary_category(self):
-        group_rank = {
-            Category.Group.MATERIAL: 0,
-            Category.Group.SYSTEM: 1,
-            Category.Group.INDUSTRY: 2,
-            Category.Group.OTHER: 3,
-        }
         categories = list(self.categories.all())
-        categories.sort(
-            key=lambda item: (group_rank.get(item.group, 9), item.sort_order, item.name)
-        )
-        return categories[0] if categories else None
+        if not categories:
+            return None
+        materials = [item for item in categories if item.group == Category.Group.MATERIAL]
+        non_metal = [
+            item
+            for item in materials
+            if item.slug != "metals-aluminum-copper-stainless-steel"
+        ]
+        if non_metal:
+            return non_metal[0]
+        systems = [item for item in categories if item.group == Category.Group.SYSTEM]
+        if systems:
+            return systems[0]
+        industries = [item for item in categories if item.group == Category.Group.INDUSTRY]
+        if industries:
+            return industries[0]
+        return materials[0] if materials else categories[0]
 
 
 class ProductImage(models.Model):
