@@ -3,6 +3,7 @@
     const nav = document.querySelector("#site-nav");
     const megaItem = document.querySelector(".has-mega");
     const megaTrigger = document.querySelector(".mega-trigger");
+    let hideTimer = null;
 
     function setMegaOpen(open) {
         if (!megaItem || !megaTrigger) {
@@ -20,6 +21,16 @@
         return window.matchMedia("(hover: hover) and (min-width: 960px)").matches;
     }
 
+    function cancelHide() {
+        window.clearTimeout(hideTimer);
+        hideTimer = null;
+    }
+
+    function scheduleHide() {
+        cancelHide();
+        hideTimer = window.setTimeout(closeMega, 200);
+    }
+
     if (toggle && nav) {
         toggle.addEventListener("click", function () {
             const open = nav.classList.toggle("is-open");
@@ -31,6 +42,21 @@
     }
 
     if (megaTrigger && megaItem) {
+        megaItem.addEventListener("mouseenter", function () {
+            if (!usesHoverMega()) {
+                return;
+            }
+            cancelHide();
+            setMegaOpen(true);
+        });
+
+        megaItem.addEventListener("mouseleave", function () {
+            if (!usesHoverMega()) {
+                return;
+            }
+            scheduleHide();
+        });
+
         megaTrigger.addEventListener("click", function (event) {
             if (usesHoverMega()) {
                 return;
