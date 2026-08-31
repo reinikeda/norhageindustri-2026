@@ -257,6 +257,7 @@ a {
     }
 
     .has-mega.is-open .mega-menu,
+    .has-mega:hover .mega-menu,
     .has-mega:focus-within .mega-menu {
         display: block;
     }

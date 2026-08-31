@@ -18,7 +18,7 @@
     }
 
     function usesHoverMega() {
-        return window.matchMedia("(hover: hover) and (min-width: 960px)").matches;
+        return window.matchMedia("(min-width: 960px)").matches;
     }
 
     function cancelHide() {
