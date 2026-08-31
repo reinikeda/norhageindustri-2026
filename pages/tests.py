@@ -80,6 +80,13 @@ class PagesTests(TestCase):
         self.assertEqual(sitemap.status_code, 200)
         self.assertContains(sitemap, reverse("pages:home"))
         self.assertContains(sitemap, reverse("pages:solutions"))
+        self.assertContains(sitemap, reverse("pages:quote"))
+
+    def test_contact_and_quote_pages_have_forms(self):
+        contact = self.client.get(reverse("pages:contact"))
+        quote = self.client.get(reverse("pages:quote"))
+        self.assertContains(contact, "Work email")
+        self.assertContains(quote, "Delivery country")
 
     def test_home_has_canonical_and_organization_schema(self):
         response = self.client.get(reverse("pages:home"))

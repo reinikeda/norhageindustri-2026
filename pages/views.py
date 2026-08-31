@@ -60,18 +60,6 @@ class CmsPageView(TemplateView):
         return context
 
 
-class ContactPageView(CmsPageView):
-    template_name = "pages/contact.html"
-    page_slug = "contact"
-    fallback = {
-        "title": "Contact",
-        "meta_description": "Contact Norhage Industri for technical advice or a project quote.",
-        "heading": "Contact",
-        "lead": "Use these details for technical questions or a project discussion.",
-        "body": "",
-    }
-
-
 class SolutionsView(TemplateView):
     template_name = "pages/solutions.html"
 

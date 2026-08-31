@@ -32,7 +32,7 @@ class Command(BaseCommand):
             )
             rebuild_sqlite_catalog_tables()
         if options["force"] or not catalog_schema_is_current():
-            self.stdout.write("Rebuilding pages and products tables. Admin users are kept.")
+            self.stdout.write("Rebuilding pages, products, and quotes tables. Admin users are kept.")
             rebuild_sqlite_catalog_tables()
         if not catalog_schema_is_current():
             raise CommandError("Catalog tables are still missing columns after rebuild.")

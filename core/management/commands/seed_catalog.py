@@ -75,12 +75,12 @@ PAGE_DEFAULTS = [
         "title": "Request a quote",
         "heading": "Request a quote",
         "lead": (
-            "The quote form with product quantities will be added after the catalog. "
-            "For now, use the contact page or email info@norhageindustri.com."
+            "Tell us the products, quantities, and destination. Sales replies with a "
+            "project quote — prices are not published on the website."
         ),
         "body": "",
         "seo_title": "",
-        "seo_description": "Ask Norhage Industri for a B2B quote.",
+        "seo_description": "Ask Norhage Industri for a B2B quote. Include products, quantities, and destination.",
     },
     {
         "slug": "services",
@@ -122,7 +122,7 @@ PAGE_DEFAULTS = [
         "slug": "cookies",
         "title": "Cookie information",
         "heading": "Cookie information",
-        "lead": "This site uses a session cookie so forms and the future quote basket can work. Marketing cookies are not part of the MVP.",
+        "lead": "This site uses a session cookie so forms can work. Marketing cookies are not part of the MVP.",
         "body": "",
         "seo_title": "",
         "seo_description": "Cookie information for the Norhage Industri website.",
@@ -173,7 +173,7 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.WARNING(
                     "Local database tables are from an older schema. "
-                    "Rebuilding pages and products tables (admin users are kept)."
+                    "Rebuilding pages, products, and quotes tables (admin users are kept)."
                 )
             )
             rebuild_sqlite_catalog_tables()
@@ -187,7 +187,7 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.WARNING(
                 "Local database tables are from an older schema. "
-                "Rebuilding pages and products tables (admin users are kept)."
+                "Rebuilding pages, products, and quotes tables (admin users are kept)."
             )
         )
         rebuild_sqlite_catalog_tables()

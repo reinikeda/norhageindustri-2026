@@ -11,7 +11,7 @@ Status: proposed from the live WordPress sites and this empty GitHub repo. Confi
 | Parent company | TEHI AS (Norway). Related entities appear on country sites (TEHI Filial Sverige, TEHI UG, TEHIS UAB). |
 | Default language | English |
 | Main domain | norhageindustri.com |
-| Quote notification email | **TBD** (today the public sites use `info@norhageindustri.com` and country inboxes) |
+| Quote notification email | `info@norhageindustri.com` (`SALES_NOTIFY_EMAIL`) |
 | B2C webshops (out of scope) | norhage.com, norhage.no, norhage.se, and related consumer shops |
 
 This repository currently contains only the initial GitHub files. There is **no Django project here**. Any test apps in a local Cursor/VS Code folder should be treated as a reference, not as the production start, unless they are copied in and audited in the next chat.
@@ -150,7 +150,7 @@ Each line item:
 
 Store the row in the database **before** sending email. Email is a notification, not the system of record.
 
-A session quote basket with multiple products is in scope for MVP. A single-product-only form would be a step backwards from how B2B buyers actually inquire (fasteners, tapes, sheets are ordered as lists).
+A session quote basket is not required for launch. The quote page accepts several product lines (SKU + quantity) on one submit, which matches how B2B buyers inquire for sheets, tapes, and fasteners. A later cart can remember lines while browsing.
 
 Do **not** include assigned staff, seven CRM statuses, or export tools in MVP.
 

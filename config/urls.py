@@ -30,6 +30,7 @@ urlpatterns = [
     path("robots.txt", robots_txt, name="robots"),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
     path("products/", include("products.urls")),
+    path("quote/", include("quotes.urls")),
     path("", include("pages.urls")),
 ]
 

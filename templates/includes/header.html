@@ -48,7 +48,7 @@
                     {% endif %}
                 {% endfor %}
             </ul>
-            <a class="button button-primary header-cta" href="{% url 'pages:quote' %}">Ask for a quote</a>
+            <a class="button button-primary header-cta" href="{% url 'pages:quote' %}"{% if request.path == '/quote/' %} aria-current="page"{% endif %}>Ask for a quote</a>
         </nav>
     </div>
 </header>

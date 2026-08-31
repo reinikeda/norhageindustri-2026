@@ -68,7 +68,7 @@ Public product URLs use the SKU: `/products/<sku>/`.
 - `core/` — shared context and error pages
 - `pages/` — homepage, CMS pages, services, and projects
 - `products/` — categories, products, images, and documents
-- `quotes/` — stub for quote requests (after the catalog)
+- `quotes/` — contact and quote request forms (stored in admin, emailed to sales)
 - `templates/` and `static/` — public layout
 - `docs/PROJECT.md` — company facts, MVP, open decisions
 - `docs/WORK_PLAN.md` — build sequence

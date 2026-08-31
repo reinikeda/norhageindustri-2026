@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -85,6 +87,9 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse("products:detail", kwargs={"sku": self.sku})
+
+    def get_quote_url(self):
+        return f"{reverse('pages:quote')}?{urlencode({'sku': self.sku})}"
 
     @property
     def image_list(self):

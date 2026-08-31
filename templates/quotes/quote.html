@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page inquiry-page">
+    <h1>{{ heading|default:"Request a quote" }}</h1>
+    <p class="lead">
+        {{ lead|default:"Tell us the products, quantities, and destination. Sales replies with a project quote — prices are not published on the website." }}
+    </p>
+    {% if body %}<div class="page-body">{{ body|linebreaks }}</div>{% endif %}
+    {% if selected_product %}
+        <p class="flash">SKU {{ selected_product.sku }} — {{ selected_product.name }} is added on the first line. Adjust the quantity if needed.</p>
+    {% endif %}
+    <div class="inquiry-form inquiry-form-wide">
+        <form method="post">
+            {% csrf_token %}
+            {% if selected_product %}
+                <input type="hidden" name="prefill_sku" value="{{ selected_product.sku }}">
+            {% endif %}
+            {% include "includes/inquiry_fields.html" %}
+            <fieldset class="line-set">
+                <legend>Products and quantities</legend>
+                <p class="muted">Add at least one published product. Extra rows can stay empty.</p>
+                {{ formset.management_form }}
+                {{ formset.non_form_errors }}
+                <div class="line-grid">
+                    {% for line in formset %}
+                        <div class="line-row">
+                            <p class="form-field">
+                                <label for="{{ line.product.id_for_label }}">Product</label>
+                                {{ line.product }}
+                                {{ line.product.errors }}
+                            </p>
+                            <p class="form-field">
+                                <label for="{{ line.quantity.id_for_label }}">Qty</label>
+                                {{ line.quantity }}
+                                {{ line.quantity.errors }}
+                            </p>
+                            {% for hidden in line.hidden_fields %}{{ hidden }}{% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+            <p>
+                <button class="button button-primary" type="submit">Send quote request</button>
+            </p>
+        </form>
+        <p class="muted">General questions without products? Use the <a href="{% url 'pages:contact' %}">contact form</a>.</p>
+    </div>
+</article>
+{% endblock %}

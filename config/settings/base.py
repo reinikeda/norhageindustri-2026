@@ -119,6 +119,14 @@ EMAIL_BACKEND = env(
 )
 DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL", "Norhage Industri <noreply@norhageindustri.com>")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+SALES_NOTIFY_EMAIL = env("SALES_NOTIFY_EMAIL", "info@norhageindustri.com")
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "norhage-industri",
+    }
+}
 
 LOGGING = {
     "version": 1,

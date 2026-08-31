@@ -226,6 +226,7 @@ class ProductPageLayoutTests(TestCase):
         self.assertContains(response, self.related.name)
         self.assertContains(response, "product-thumbs")
         self.assertContains(response, "Ask for a quote")
+        self.assertContains(response, f"{reverse('pages:quote')}?sku={self.product.sku}")
         self.assertContains(response, 'aria-label="Breadcrumb"')
 
     def test_category_page_has_count_and_related_topics(self):

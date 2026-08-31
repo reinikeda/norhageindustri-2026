@@ -52,7 +52,7 @@ Apps:
 - `accounts` (custom user only)
 - `pages` (stub)
 - `products` (stub)
-- `quotes` (stub, not implemented yet)
+- `quotes` (contact + quote forms)
 
 Must include:
 
@@ -105,13 +105,15 @@ Completion gate:
 
 ### Package 3 — Quotes + email
 
-Implement `quotes` after the catalog is browsable.
+Contact and quote forms are public. Do not put a full form in the footer or on every page.
 
 Public:
 
-- Quote basket (session) for multiple products and quantities
-- Quote form on product pages and a dedicated request page
-- Validation, confirmation page
+- Header/footer/product **Ask for a quote** goes to `/quote/` (a page, not a modal)
+- Product pages pass `?sku=` so the first line is prefilled
+- Contact form on `/contact/` for non-product questions
+- Quote form on `/quote/` with several product + quantity lines
+- Validation, confirmation page (`/quote/sent/`)
 - Honeypot + rate limiting (and CAPTCHA if spam appears)
 
 Admin:
@@ -122,9 +124,8 @@ Admin:
 
 Email:
 
-- Sales notification
-- Customer confirmation
-- Reply-To = sales inbox
+- Sales notification (Reply-To = the buyer)
+- Customer confirmation (Reply-To = sales inbox)
 - Console backend in development; real provider in staging/production
 
 Completion gate:

@@ -23,7 +23,7 @@ Editors add products, services, projects, and page copy in `/admin/`. CSV import
 
 ## Rules
 
-- One work package per change set. Do not build the catalog, quote form, translations, or AI import until the current package is done.
+- One work package per change set. Do not build translations or the AI import until the current package is done.
 - Do not add customer registration.
 - Do not commit `.env`, `db.sqlite3`, `media/` uploads, or `staticfiles/`.
 - Public product URLs will later use SKU: `/products/<sku>/`.

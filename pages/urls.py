@@ -1,8 +1,9 @@
 from django.urls import path
 
+from quotes.views import ContactPageView, QuotePageView
+
 from .views import (
     CmsPageView,
-    ContactPageView,
     HomeView,
     ProjectDetailView,
     ProjectListView,
@@ -55,21 +56,7 @@ urlpatterns = [
         name="about",
     ),
     path("contact/", ContactPageView.as_view(), name="contact"),
-    path(
-        "quote/",
-        CmsPageView.as_view(
-            template_name="pages/placeholder.html",
-            page_slug="quote",
-            fallback={
-                "title": "Request a quote",
-                "meta_description": "Ask Norhage Industri for a B2B quote.",
-                "heading": "Request a quote",
-                "lead": "The quote form with product quantities will be added after the catalog. For now, use the contact page or email info@norhageindustri.com.",
-                "body": "",
-            },
-        ),
-        name="quote",
-    ),
+    path("quote/", QuotePageView.as_view(), name="quote"),
     path(
         "terms/",
         CmsPageView.as_view(
@@ -106,7 +93,7 @@ urlpatterns = [
                 "title": "Cookie information",
                 "meta_description": "Cookie information for the Norhage Industri website.",
                 "heading": "Cookie information",
-                "lead": "This site uses a session cookie so forms and the future quote basket can work. Marketing cookies are not part of the MVP.",
+                "lead": "This site uses a session cookie so forms can work. Marketing cookies are not part of the MVP.",
                 "body": "",
             },
         ),

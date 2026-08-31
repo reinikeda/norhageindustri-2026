@@ -57,7 +57,7 @@
             {% endif %}
             <p class="muted">No public prices. Quotes are prepared from SKU, quantity, and destination.</p>
             <div class="product-summary-actions">
-                <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+                <a class="button button-primary" href="{{ product.get_quote_url }}">Ask for a quote</a>
                 {% if spec_rows %}<a class="button button-secondary" href="#specifications">Specifications</a>{% endif %}
                 {% if product.documents.all %}<a class="text-link" href="#documents">Datasheets</a>{% endif %}
             </div>
@@ -155,11 +155,11 @@
     <div class="cta-inner">
         <h2>Need this product for a project?</h2>
         <p>Tell us the SKU, quantity, and destination. Sales replies from {{ company_email }}.</p>
-        <a class="button button-accent" href="{% url 'pages:quote' %}">Ask for a quote</a>
+        <a class="button button-accent" href="{{ product.get_quote_url }}">Ask for a quote</a>
     </div>
 </section>
 <div class="product-sticky-cta">
     <span>SKU {{ product.sku }}</span>
-    <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+    <a class="button button-primary" href="{{ product.get_quote_url }}">Ask for a quote</a>
 </div>
 {% endblock %}
