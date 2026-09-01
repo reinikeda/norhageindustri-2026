@@ -1,34 +1,71 @@
 {% load static %}
 <footer class="site-footer">
     <div class="footer-inner">
-        <div>
+        <div class="footer-brand">
             <a class="footer-logo" href="{% url 'pages:home' %}">
                 <img src="{% static 'img/logo-on-dark.png' %}" alt="Norhage Industri" width="140" height="101">
             </a>
-            <p>{{ company_address }}</p>
-            <p>Org.nr. {{ company_org_number }}</p>
-            <p><a href="tel:+4794023135">{{ company_phone }}</a></p>
-            <p><a href="mailto:{{ company_email }}">{{ company_email }}</a></p>
-            <p class="social-label">Follow us</p>
+            <p class="footer-blurb">B2B greenhouse systems, technical plastics, and façade materials. Prices on request.</p>
+            <a class="button footer-cta" href="{% url 'pages:quote' %}">Ask for a quote</a>
+            <p class="social-label">Follow</p>
             {% include "includes/social.html" %}
         </div>
-        <nav aria-label="Footer">
-            <p class="footer-heading">Explore</p>
+
+        <div class="footer-sales">
+            <p class="footer-heading" id="footer-sales-heading">Talk to sales</p>
+            <ul class="footer-facts" aria-labelledby="footer-sales-heading">
+                <li>
+                    <span>Phone</span>
+                    <a href="tel:+4794023135">{{ company_phone }}</a>
+                    {% if company_phone_alt %}
+                        <a href="tel:+4798367181">{{ company_phone_alt }}</a>
+                    {% endif %}
+                </li>
+                <li>
+                    <span>Email</span>
+                    <a href="mailto:{{ company_email }}">{{ company_email }}</a>
+                </li>
+                <li>
+                    <span>Registered office</span>
+                    <address>{{ company_address }}</address>
+                </li>
+                <li>
+                    <span>Organisation number</span>
+                    {{ company_org_number }}
+                </li>
+            </ul>
+            <p class="footer-hint">No public showroom. Sales replies from {{ company_email }}. No customer account is required.</p>
+        </div>
+
+        <nav class="footer-nav" aria-labelledby="footer-catalog-heading">
+            <p class="footer-heading" id="footer-catalog-heading">Catalog</p>
             <ul>
-                {% for item in main_nav %}
-                    <li><a href="{% url item.url_name %}">{{ item.label }}</a></li>
-                {% endfor %}
-                <li><a href="{% url 'pages:quote' %}">Ask for a quote</a></li>
+                <li><a href="{% url 'pages:solutions' %}">Solutions &amp; products</a></li>
+                <li><a href="{% url 'pages:solution_topic' group='system' slug='turnkey-facilities' %}">Commercial greenhouses</a></li>
+                <li><a href="{% url 'pages:solution_topic' group='material' slug='polycarbonate' %}">Polycarbonate</a></li>
+                <li><a href="{% url 'pages:solution_topic' group='material' slug='technical-plastics' %}">Technical plastics</a></li>
+                <li><a href="{% url 'pages:services' %}">Services</a></li>
+                <li><a href="{% url 'pages:wholesale' %}">Wholesale</a></li>
             </ul>
         </nav>
-        <nav aria-label="Legal">
-            <p class="footer-heading">Legal</p>
+
+        <nav class="footer-nav" aria-labelledby="footer-company-heading">
+            <p class="footer-heading" id="footer-company-heading">Company</p>
             <ul>
-                <li><a href="{% url 'pages:terms' %}">Terms</a></li>
-                <li><a href="{% url 'pages:privacy' %}">Privacy</a></li>
-                <li><a href="{% url 'pages:cookies' %}">Cookies</a></li>
+                <li><a href="{% url 'pages:about' %}">About us</a></li>
+                <li><a href="{% url 'pages:cases' %}">Cases &amp; projects</a></li>
+                <li><a href="{% url 'pages:contact' %}">Contact</a></li>
+                <li><a href="{% url 'pages:quote' %}">Request a quote</a></li>
             </ul>
         </nav>
     </div>
-    <p class="footer-note">B2B catalog. Prices are provided on request. Consumer webshops are separate from this site.</p>
+
+    <div class="footer-bar">
+        <nav class="footer-legal" aria-label="Legal">
+            <a href="{% url 'pages:terms' %}">Terms</a>
+            <a href="{% url 'pages:privacy' %}">Privacy</a>
+            <a href="{% url 'pages:cookies' %}">Cookies</a>
+        </nav>
+        <p class="footer-note">{{ company_legal_name }} · Org.nr. {{ company_org_number }}. B2B catalog only — consumer webshops are separate. Prices are provided on request.</p>
+    </div>
 </footer>

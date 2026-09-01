@@ -33,7 +33,7 @@ def site_graph(request):
                 "identifier": "911 648 032",
                 "url": origin,
                 "email": "info@norhageindustri.com",
-                "telephone": "+47 940 23 135",
+                "telephone": ["+47 940 23 135", "+47 983 67 181"],
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "Vardheivegen 68",

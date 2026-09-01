@@ -102,7 +102,7 @@
             <li><strong>Registered</strong> 16 January 2013</li>
             <li><strong>Address</strong> {{ company_address }}</li>
             <li><strong>Email</strong> <a href="mailto:{{ company_email }}">{{ company_email }}</a></li>
-            <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a></li>
+            <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a>{% if company_phone_alt %} · <a href="tel:+4798367181">{{ company_phone_alt }}</a>{% endif %}</li>
         </ul>
         <p class="muted">The address is the registered office. It is not a walk-in showroom.</p>
     </section>

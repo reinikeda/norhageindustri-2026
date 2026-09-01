@@ -24,6 +24,26 @@ class PagesTests(TestCase):
         self.assertContains(response, "facebook.com/people/Norhage-Industri")
         self.assertContains(response, "911 648 032")
 
+    def test_footer_covers_sales_catalog_and_legal(self):
+        response = self.client.get(reverse("pages:home"))
+        footer = response.content.decode().split('<footer class="site-footer">', 1)[-1]
+        self.assertIn("Talk to sales", footer)
+        self.assertIn("tel:+4794023135", footer)
+        self.assertIn("tel:+4798367181", footer)
+        self.assertIn("mailto:info@norhageindustri.com", footer)
+        self.assertIn("No public showroom", footer)
+        self.assertIn(reverse("pages:quote"), footer)
+        self.assertIn(reverse("pages:services"), footer)
+        self.assertIn(reverse("pages:wholesale"), footer)
+        self.assertIn(
+            reverse("pages:solution_topic", kwargs={"group": "material", "slug": "polycarbonate"}),
+            footer,
+        )
+        self.assertIn(reverse("pages:terms"), footer)
+        self.assertIn(reverse("pages:privacy"), footer)
+        self.assertIn(reverse("pages:cookies"), footer)
+        self.assertIn("consumer webshops", footer.lower())
+
     def test_key_pages_render(self):
         names = [
             "pages:solutions",

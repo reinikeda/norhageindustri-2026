@@ -9,6 +9,7 @@ def site(request):
         "company_org_number": "911 648 032",
         "company_tagline": "Greenhouses and plastic experts",
         "company_phone": "+47 940 23 135",
+        "company_phone_alt": "+47 983 67 181",
         "company_email": "info@norhageindustri.com",
         "company_address": "TEHI AS, Vardheivegen 68, 4340 Bryne, Norway",
         "main_nav": MAIN_NAV,

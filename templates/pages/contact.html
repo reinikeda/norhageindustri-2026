@@ -14,7 +14,7 @@
                 <li><strong>Legal name</strong> {{ company_legal_name }}</li>
                 <li><strong>Organisation number</strong> {{ company_org_number }}</li>
                 <li><strong>Email</strong> <a href="mailto:{{ company_email }}">{{ company_email }}</a></li>
-                <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a></li>
+                <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a>{% if company_phone_alt %} or <a href="tel:+4798367181">{{ company_phone_alt }}</a>{% endif %}</li>
                 <li><strong>Address</strong> {{ company_address }}</li>
             </ul>
             <p class="muted">Registered office in Bryne. There is no public showroom.</p>
