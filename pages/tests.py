@@ -287,7 +287,45 @@ class CmsPageTests(TestCase):
         )
         response = self.client.get(reverse("pages:home"))
         self.assertContains(response, product.name)
-        self.assertNotContains(response, "Commercial greenhouses")
+        self.assertContains(response, "Commercial greenhouses")
+        self.assertContains(response, "From the catalog")
+
+    def test_home_shows_recent_projects_and_topic_shortcuts(self):
+        Project.objects.create(
+            title="Bryne assembly case",
+            slug="bryne-assembly-case",
+            country="Norway",
+            year=2025,
+            work_type=Project.WorkType.ASSEMBLY,
+            is_published=True,
+        )
+        Project.objects.create(
+            title="Hidden home case",
+            slug="hidden-home-case",
+            is_published=False,
+        )
+        response = self.client.get(reverse("pages:home"))
+        self.assertContains(response, "Bryne assembly case")
+        self.assertNotContains(response, "Hidden home case")
+        self.assertContains(response, reverse("pages:solution_topic", kwargs={"group": "material", "slug": "polycarbonate"}))
+        self.assertContains(response, "How a project starts")
+        self.assertContains(response, "B2B · TEHI AS · Norway")
+        self.assertContains(response, "Prices on request")
+
+    def test_seed_updates_wordpress_home_copy(self):
+        Page.objects.create(
+            slug="home",
+            title="Home",
+            heading="Industrial greenhouse systems, technical plastics, and façade materials.",
+            lead="We deliver advanced industrial solutions—customized greenhouse systems.",
+            body="Explore Our Comprehensive Industrial Solutions",
+            is_published=True,
+        )
+        call_command("seed_catalog", verbosity=0)
+        page = Page.objects.get(slug="home")
+        self.assertIn("technical materials for commercial projects", page.heading)
+        self.assertIn("contractors and growers", page.lead)
+        self.assertNotIn("We deliver advanced industrial solutions", page.lead)
 
 
 class ProjectCaseTests(TestCase):

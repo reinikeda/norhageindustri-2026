@@ -51,7 +51,7 @@ The Django MVP should keep that path, and improve it: a quote can include specif
 Must ship:
 
 - English website on norhageindustri.com
-- Homepage and informational pages (About, Services, Contact, Wholesale, Terms, Privacy, Cookies)
+- Homepage and informational pages (About, Services, Contact, Wholesale, Terms, Privacy, Cookies). The homepage first screen must state the offer (greenhouse systems and technical materials), the buying model (quote, no public prices), and a path into the catalog.
 - Wholesale as **one landing page** (`/wholesale/`) with catalog cards and PDF downloads. Do not create `/wholesale/<slug>/` until there are enough lines to need them. Public PDFs have **no prices**.
 - Company identity on Contact, About, and footer (legal name, organisation number, address, email, phone)
 - About is a **company page**, not a second catalog: who we are, how quoting/site work works, and links to cases. Do **not** use generated office or employee photos, and do **not** invent a year-by-year timeline unless dates are confirmed.
@@ -102,7 +102,7 @@ The English site (TEHI AS, Norway) needs:
 
 Not needed for this B2B catalog (no webshop checkout): returns, shipping policy, cancellation form, consumer ADR page.
 
-Live WordPress also has Our Partners and Clients Feedback. Those are marketing pages, not legal ones. Partners can wait; testimonials already appear on the homepage.
+Live WordPress also has Our Partners and Clients Feedback. Those are marketing pages, not legal ones. Partners can wait. Do not put unverified testimonials on the Django homepage.
 
 Test copy scraped from the English WordPress pages is in `docs/examples/pages.csv`. Rewrite before launch.
 

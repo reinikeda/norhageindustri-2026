@@ -85,6 +85,8 @@ Pages (templates or a simple `Page` model — no CMS):
 
 Homepage should reuse the live English structure: introduction, product groups, services, proof/projects teaser, quote CTA, contact.
 
+The 2026 homepage must make the offer obvious in the first screen: who (B2B, TEHI AS, Norway), what (greenhouse systems and technical materials), how to buy (quote, no public prices). Do not use generated office or people photos. Use real project photos only when they exist.
+
 Products:
 
 - `Category` and `Product` as specified in `PROJECT.md`

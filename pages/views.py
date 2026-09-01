@@ -30,9 +30,12 @@ class HomeView(TemplateView):
             context["home_lead"] = page.lead
         context["featured_products"] = (
             Product.objects.filter(is_active=True, is_featured=True)
-            .prefetch_related("images")[:8]
+            .prefetch_related("images")[:4]
         )
-        context["published_services"] = Service.objects.filter(is_published=True)[:4]
+        context["published_services"] = Service.objects.filter(is_published=True)[:2]
+        context["recent_projects"] = list(
+            Project.objects.filter(is_published=True).prefetch_related("images")[:3]
+        )
         return context
 
 

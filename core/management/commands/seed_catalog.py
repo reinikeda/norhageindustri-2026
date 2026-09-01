@@ -13,10 +13,10 @@ PAGE_DEFAULTS = [
     {
         "slug": "home",
         "title": "Home",
-        "heading": "Industrial greenhouse systems, technical plastics, and façade materials.",
+        "heading": "Industrial greenhouse systems and technical materials for commercial projects.",
         "lead": (
-            "We supply commercial projects across Europe. Browse by industry, material, "
-            "or system, then ask for a quote — prices are not published on the website."
+            "We supply contractors and growers across Europe. Browse the catalog, then ask "
+            "for a quote — prices are not published."
         ),
         "body": "",
         "seo_title": "",
@@ -260,6 +260,16 @@ class Command(BaseCommand):
                 page.seo_description = data["seo_description"]
                 page.body = data.get("body", "")
                 page.save(update_fields=["lead", "seo_description", "body"])
+            elif page.slug == "home" and (
+                "We deliver advanced industrial solutions" in lead
+                or "Explore Our Comprehensive" in body
+                or "technical plastics, and façade materials." in (page.heading or "")
+            ):
+                page.heading = data["heading"]
+                page.lead = data["lead"]
+                page.body = data.get("body", "")
+                page.seo_description = data["seo_description"]
+                page.save(update_fields=["heading", "lead", "body", "seo_description"])
             elif page.slug == "about" and (
                 "Our Story" in body
                 or "Why Choose Norhage" in body
