@@ -5,7 +5,7 @@ from django.db.utils import OperationalError, ProgrammingError
 
 from core.local_schema import catalog_schema_is_current, rebuild_sqlite_catalog_tables
 from core.menu import MEGA_COLUMNS
-from pages.models import Page, Project, Service
+from pages.models import Page, Project, Service, WholesaleCatalog
 from products.models import Category, Product, ProductSpecification
 
 
@@ -52,12 +52,15 @@ PAGE_DEFAULTS = [
     {
         "slug": "wholesale",
         "title": "Wholesale",
-        "heading": "Wholesale",
+        "heading": "Wholesale partnership",
         "lead": (
             "We supply wholesalers and distributors with industrial materials, greenhouse "
             "components, and related systems. Volume pricing is quoted per request."
         ),
-        "body": "Spec sheets, sample quantities, and project pricing are quoted per request.",
+        "body": (
+            "Download a catalog PDF for specifications. Volume prices, branding, and "
+            "minimum quantities are confirmed on a quote — they are not published on the website."
+        ),
         "seo_title": "",
         "seo_description": "Wholesale partnership with Norhage Industri for distributors and professional buyers.",
     },
@@ -130,8 +133,32 @@ PAGE_DEFAULTS = [
 ]
 
 
+WHOLESALE_CATALOG_DEFAULTS = [
+    {
+        "name": "Aluminium sealing tapes for multiwall polycarbonate",
+        "slug": "aluminium-sealing-tapes",
+        "summary": (
+            "Aluminium foil tapes for sealing multiwall polycarbonate channels against dust, "
+            "moisture, and insects. Roll widths include 25 mm, 38 mm, and 60 mm. Custom branding "
+            "is available. Volume prices are confirmed on a quote."
+        ),
+        "sort_order": 10,
+    },
+    {
+        "name": "Automatic vent openers for greenhouses",
+        "slug": "automatic-vent-openers",
+        "summary": (
+            "Thermally driven greenhouse vent openers — no electricity required. One-time "
+            "installation for hands-free climate control in commercial greenhouse conditions. "
+            "Volume prices are confirmed on a quote."
+        ),
+        "sort_order": 20,
+    },
+]
+
+
 class Command(BaseCommand):
-    help = "Create menu categories, starter CMS pages, and optional demo catalog items."
+    help = "Create menu categories, starter CMS pages, wholesale catalogs, and optional demo catalog items."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -144,13 +171,15 @@ class Command(BaseCommand):
         self.ensure_catalog_schema()
         created_categories = self.seed_categories()
         created_pages = self.seed_pages()
+        created_catalogs = self.seed_wholesale_catalogs()
         extra = {"products": 0, "services": 0, "projects": 0}
         if options["demo"]:
             extra = self.seed_demo()
         self.stdout.write(
             self.style.SUCCESS(
                 "Seeded "
-                f"{created_categories} categories, {created_pages} pages"
+                f"{created_categories} categories, {created_pages} pages, "
+                f"{created_catalogs} wholesale catalogs"
                 + (
                     f", {extra['products']} products, {extra['services']} services, "
                     f"{extra['projects']} projects"
@@ -225,11 +254,33 @@ class Command(BaseCommand):
                 created += 1
                 continue
             lead = page.lead or ""
+            body = page.body or ""
             if "will be added after the catalog" in lead or "future quote basket" in lead:
                 page.lead = data["lead"]
                 page.seo_description = data["seo_description"]
                 page.body = data.get("body", "")
                 page.save(update_fields=["lead", "seo_description", "body"])
+            elif page.slug == "wholesale" and (
+                "Aluminium sealing tapes" in body
+                or "Automatic vent openers" in body
+                or "Spec sheets, sample quantities" in body
+            ):
+                page.heading = data["heading"]
+                page.lead = data["lead"]
+                page.body = data["body"]
+                page.seo_description = data["seo_description"]
+                page.save(update_fields=["heading", "lead", "body", "seo_description"])
+        return created
+
+    def seed_wholesale_catalogs(self):
+        created = 0
+        for data in WHOLESALE_CATALOG_DEFAULTS:
+            _, was_created = WholesaleCatalog.objects.get_or_create(
+                slug=data["slug"],
+                defaults=data,
+            )
+            if was_created:
+                created += 1
         return created
 
     def seed_demo(self):

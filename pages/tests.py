@@ -1,9 +1,10 @@
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from pages.models import Page, Project, Service
+from pages.models import Page, Project, Service, WholesaleCatalog
 from products.models import Product
 
 
@@ -160,6 +161,47 @@ class CmsPageTests(TestCase):
         self.assertContains(self.client.get(reverse("pages:cases")), project.title)
         self.assertContains(self.client.get(project.get_absolute_url()), project.summary)
 
+    def test_wholesale_shows_published_catalogs_and_hides_drafts(self):
+        published = WholesaleCatalog.objects.create(
+            name="Aluminium sealing tapes for multiwall polycarbonate",
+            slug="aluminium-sealing-tapes",
+            summary="Sealing tapes for polycarbonate channels.",
+            is_published=True,
+            sort_order=10,
+        )
+        WholesaleCatalog.objects.create(
+            name="Draft greenhouse film catalog",
+            slug="draft-film",
+            summary="Should stay hidden until published.",
+            is_published=False,
+            sort_order=20,
+        )
+        response = self.client.get(reverse("pages:wholesale"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, published.name)
+        self.assertContains(response, "Catalog PDF available from sales on request.")
+        self.assertContains(response, "Ask for a quote")
+        self.assertNotContains(response, "Draft greenhouse film catalog")
+        self.assertContains(response, "Volume prices are not published")
+
+    def test_wholesale_catalog_download_link_when_file_present(self):
+        catalog = WholesaleCatalog.objects.create(
+            name="Automatic vent openers for greenhouses",
+            slug="automatic-vent-openers",
+            summary="Thermally driven vent openers.",
+            file=SimpleUploadedFile(
+                "openers.pdf",
+                b"%PDF-1.4\n",
+                content_type="application/pdf",
+            ),
+            is_published=True,
+        )
+        response = self.client.get(reverse("pages:wholesale"))
+        self.assertContains(response, catalog.name)
+        self.assertContains(response, "Download PDF")
+        self.assertContains(response, catalog.file.url)
+        self.assertNotContains(response, "Catalog PDF available from sales on request.")
+
     def test_seed_updates_old_quote_placeholder_copy(self):
         Page.objects.create(
             slug="quote",
@@ -172,6 +214,23 @@ class CmsPageTests(TestCase):
         page = Page.objects.get(slug="quote")
         self.assertNotIn("will be added after the catalog", page.lead)
         self.assertIn("quantities, and destination", page.lead)
+
+    def test_seed_moves_wholesale_product_copy_off_the_cms_page(self):
+        Page.objects.create(
+            slug="wholesale",
+            title="Wholesale",
+            heading="Wholesale",
+            lead="Old lead.",
+            body="Aluminium sealing tapes for multiwall polycarbonate\n\nAutomatic vent openers for greenhouses",
+            is_published=True,
+        )
+        call_command("seed_catalog", verbosity=0)
+        page = Page.objects.get(slug="wholesale")
+        self.assertEqual(page.heading, "Wholesale partnership")
+        self.assertNotIn("Aluminium sealing tapes", page.body)
+        self.assertIn("catalog PDF", page.body)
+        self.assertTrue(WholesaleCatalog.objects.filter(slug="aluminium-sealing-tapes").exists())
+        self.assertTrue(WholesaleCatalog.objects.filter(slug="automatic-vent-openers").exists())
 
     def test_home_shows_featured_products(self):
         product = Product.objects.create(
@@ -265,6 +324,22 @@ class ExamplePagesCsvTests(TestCase):
         self.assertIn("personal data", privacy.lead.lower())
         response = self.client.get(reverse("pages:about"))
         self.assertContains(response, "Our Story")
+        wholesale = Page.objects.get(slug="wholesale")
+        self.assertNotIn("Aluminium sealing tapes", wholesale.body)
+        self.assertIn("catalog pdf", wholesale.body.lower())
+
+
+class ExampleWholesaleCsvTests(TestCase):
+    def test_wholesale_catalogs_csv_imports(self):
+        call_command("import_wholesale_csv")
+        self.assertEqual(WholesaleCatalog.objects.count(), 2)
+        tapes = WholesaleCatalog.objects.get(slug="aluminium-sealing-tapes")
+        self.assertIn("25 mm", tapes.summary)
+        openers = WholesaleCatalog.objects.get(slug="automatic-vent-openers")
+        self.assertTrue(openers.is_published)
+        response = self.client.get(reverse("pages:wholesale"))
+        self.assertContains(response, tapes.name)
+        self.assertContains(response, openers.name)
 
 
 class ExampleProjectsCsvTests(TestCase):

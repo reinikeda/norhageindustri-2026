@@ -19,7 +19,7 @@ If a leftover local `db.sqlite3` is missing catalog columns, `seed_catalog` rebu
 Default settings module: `config.settings.dev`.
 Custom user: `AUTH_USER_MODEL = accounts.User`. Create it before any other user-related migrations.
 
-Editors add products, services, projects, and page copy in `/admin/`. CSV import is available on those admin screens. Product CSV `categories` is a `|`-separated list of category slugs. Images are uploaded in admin.
+Editors add products, services, projects, wholesale catalogs, and page copy in `/admin/`. CSV import is available on those admin screens. Product CSV `categories` is a `|`-separated list of category slugs. Images and wholesale PDFs are uploaded in admin, not committed.
 
 ## Rules
 

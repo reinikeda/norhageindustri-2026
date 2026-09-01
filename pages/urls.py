@@ -11,6 +11,7 @@ from .views import (
     ServiceListView,
     SolutionTopicView,
     SolutionsView,
+    WholesalePageView,
 )
 
 app_name = "pages"
@@ -27,20 +28,7 @@ urlpatterns = [
     path("cases/<slug:slug>/", ProjectDetailView.as_view(), name="project_detail"),
     path("services/", ServiceListView.as_view(), name="services"),
     path("services/<slug:slug>/", ServiceDetailView.as_view(), name="service_detail"),
-    path(
-        "wholesale/",
-        CmsPageView.as_view(
-            page_slug="wholesale",
-            fallback={
-                "title": "Wholesale",
-                "meta_description": "Wholesale partnership with Norhage Industri for distributors and professional buyers.",
-                "heading": "Wholesale",
-                "lead": "We supply wholesalers and distributors with industrial materials, greenhouse components, and related systems. Volume pricing is quoted per request.",
-                "body": "Spec sheets, sample quantities, and project pricing are quoted per request.",
-            },
-        ),
-        name="wholesale",
-    ),
+    path("wholesale/", WholesalePageView.as_view(), name="wholesale"),
     path(
         "about/",
         CmsPageView.as_view(

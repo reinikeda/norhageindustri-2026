@@ -1,6 +1,6 @@
 from import_export import resources
 
-from .models import Page, Project, Service
+from .models import Page, Project, Service, WholesaleCatalog
 
 
 class PageResource(resources.ModelResource):
@@ -28,6 +28,19 @@ class ServiceResource(resources.ModelResource):
             "slug",
             "summary",
             "body",
+            "is_published",
+            "sort_order",
+        )
+
+
+class WholesaleCatalogResource(resources.ModelResource):
+    class Meta:
+        model = WholesaleCatalog
+        import_id_fields = ("slug",)
+        fields = (
+            "name",
+            "slug",
+            "summary",
             "is_published",
             "sort_order",
         )

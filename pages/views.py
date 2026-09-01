@@ -6,7 +6,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from core.menu import find_topic
 from products.models import Category, Product
 
-from .models import Page, Project, Service
+from .models import Page, Project, Service, WholesaleCatalog
 
 
 def published_page(slug):
@@ -57,6 +57,34 @@ class CmsPageView(TemplateView):
             )
         else:
             context.update(self.fallback)
+        return context
+
+
+class WholesalePageView(CmsPageView):
+    template_name = "pages/wholesale.html"
+    page_slug = "wholesale"
+    fallback = {
+        "title": "Wholesale",
+        "meta_description": "Wholesale partnership with Norhage Industri for distributors and professional buyers.",
+        "heading": "Wholesale partnership",
+        "lead": (
+            "We supply wholesalers and distributors with industrial materials, greenhouse "
+            "components, and related systems. Volume pricing is quoted per request."
+        ),
+        "body": (
+            "Download a catalog PDF for specifications. Volume prices, branding, and "
+            "minimum quantities are confirmed on a quote — they are not published on the website."
+        ),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["catalogs"] = WholesaleCatalog.objects.filter(is_published=True)
+        heading = context.get("heading") or "Wholesale partnership"
+        context["breadcrumbs"] = [
+            {"label": "Home", "url": "/"},
+            {"label": heading, "url": ""},
+        ]
         return context
 
 

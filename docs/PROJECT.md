@@ -51,14 +51,15 @@ The Django MVP should keep that path, and improve it: a quote can include specif
 Must ship:
 
 - English website on norhageindustri.com
-- Homepage and informational pages (About, Services, Contact, Terms, Privacy, Cookies)
+- Homepage and informational pages (About, Services, Contact, Wholesale, Terms, Privacy, Cookies)
+- Wholesale as **one landing page** (`/wholesale/`) with catalog cards and PDF downloads. Do not create `/wholesale/<slug>/` until there are enough lines to need them. Public PDFs have **no prices**.
 - Company identity on Contact/footer (legal name, address, email, phone; add organisation number when rewriting)
 - Product categories and product catalog
 - Product detail pages
 - No public prices
 - Ask-for-a-quote form, including selected products and quantities
 - Cases & projects with country, year, work type, size, and a photo gallery
-- Django admin for pages, categories, products, quotes
+- Django admin for pages, categories, products, wholesale catalogs, quotes
 - Email notification to sales + confirmation to the sender
 - Basic SEO (titles, meta descriptions, clean URLs, sitemap, robots)
 - HTTPS production deploy, backups, spam protection on public forms
@@ -117,7 +118,7 @@ Use this as the starting taxonomy. Nested categories only if the live catalog al
 - Greenhouse film / related agricultural products (strong on the LT site)
 - Services (assembly, repair, cutting, machining, bending) — these may be pages, not products
 
-Wholesale-style SKUs already on the English site (sealing tapes, automatic vent openers) are good first catalog entries: they have names, variants, and PDF spec sheets.
+Wholesale-style SKUs already on the English site (sealing tapes, automatic vent openers) are good first catalog entries: they have names, variants, and PDF spec sheets. On `/wholesale/` they appear as downloadable catalog cards, not as separate pages.
 
 ## Required product fields (MVP)
 

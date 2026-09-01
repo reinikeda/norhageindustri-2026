@@ -1,8 +1,8 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Page, Project, ProjectImage, Service
-from .resources import PageResource, ProjectResource, ServiceResource
+from .models import Page, Project, ProjectImage, Service, WholesaleCatalog
+from .resources import PageResource, ProjectResource, ServiceResource, WholesaleCatalogResource
 
 
 @admin.register(Page)
@@ -27,6 +27,24 @@ class ServiceAdmin(ImportExportModelAdmin):
     list_filter = ("is_published",)
     search_fields = ("name", "summary")
     prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(WholesaleCatalog)
+class WholesaleCatalogAdmin(ImportExportModelAdmin):
+    resource_classes = [WholesaleCatalogResource]
+    list_display = ("name", "slug", "has_file", "is_published", "sort_order")
+    list_filter = ("is_published",)
+    search_fields = ("name", "summary", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+    readonly_fields = ("created_at", "updated_at")
+    fieldsets = (
+        (None, {"fields": ("name", "slug", "summary", "file", "image")}),
+        ("Publishing", {"fields": ("is_published", "sort_order", "created_at", "updated_at")}),
+    )
+
+    @admin.display(description="PDF", boolean=True)
+    def has_file(self, obj):
+        return bool(obj.file)
 
 
 class ProjectImageInline(admin.TabularInline):

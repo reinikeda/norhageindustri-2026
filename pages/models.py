@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-from core.validators import validate_image_file
+from core.validators import validate_document_file, validate_image_file
 
 
 class TimeStamped(models.Model):
@@ -65,6 +65,57 @@ class Service(TimeStamped):
 
     def get_absolute_url(self):
         return reverse("pages:service_detail", kwargs={"slug": self.slug})
+
+
+class WholesaleCatalog(TimeStamped):
+    """A downloadable wholesale line on the single /wholesale/ page.
+
+    Keep one landing page while there are only a few PDFs. The slug is stored
+    so a later /wholesale/<slug>/ page can reuse the same row.
+    """
+
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True)
+    summary = models.TextField(
+        help_text="Short pitch for distributors. Do not publish prices here.",
+    )
+    file = models.FileField(
+        "Catalog PDF",
+        upload_to="wholesale/",
+        blank=True,
+        validators=[validate_document_file],
+        help_text="Spec or catalog PDF. Prefer a no-price file; volume prices stay on the quote.",
+    )
+    image = models.ImageField(
+        "Cover image",
+        upload_to="wholesale/covers/",
+        blank=True,
+        validators=[validate_image_file],
+    )
+    is_published = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["sort_order", "name"]
+        verbose_name = "wholesale catalog"
+        verbose_name_plural = "wholesale catalogs"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    @property
+    def file_kind(self):
+        name = (self.file.name or "").lower()
+        if name.endswith(".pdf"):
+            return "PDF"
+        if "." in name:
+            return name.rsplit(".", 1)[-1].upper()
+        return "File"
 
 
 class Project(TimeStamped):

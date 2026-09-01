@@ -10,6 +10,7 @@ REQUIRED_COLUMNS = {
     "products_category": ("name", "slug", "group"),
     "products_product": ("sku", "name", "slug"),
     "pages_project": ("country", "year", "work_type", "dimensions"),
+    "pages_wholesalecatalog": ("name", "slug", "is_published"),
 }
 
 

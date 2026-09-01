@@ -931,6 +931,38 @@ h1 {
     align-items: center;
 }
 
+.wholesale-catalogs {
+    margin-top: 1.8rem;
+}
+
+.wholesale-catalogs h2 {
+    margin-bottom: 0.9rem;
+}
+
+.catalog-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.catalog-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.9rem;
+}
+
+.catalog-card-actions .muted {
+    margin: 0;
+    flex: 1 1 100%;
+}
+
+.wholesale-price-note {
+    margin-top: 1.5rem;
+}
+
 form.project-filters {
     display: block;
     max-width: none;

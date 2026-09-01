@@ -49,6 +49,7 @@ Use Django admin for day-to-day work:
 - **Products** — SKU, text, several subcategories, photos, and PDFs
 - **Categories** — industry / material / system topics (and optional child subcategories)
 - **Pages** — heading, lead, body, and image for Home, Solutions, About, Wholesale, Contact, Quote, Services, Cases, Terms, Privacy, Cookies
+- **Wholesale catalogs** — name, pitch, PDF, and optional cover on the single `/wholesale/` page (upload the PDF in admin; do not commit live catalog files)
 - **Services** and **Projects** — list + detail pages
 
 CSV import/export is on those same admin screens (Import / Export). Product categories in a CSV are category slugs separated by `|`. Test content scraped from the live English WordPress site:
@@ -56,6 +57,7 @@ CSV import/export is on those same admin screens (Import / Export). Product cate
 - `docs/examples/products.csv` — 149 products (guessed categories, no images)
 - `docs/examples/pages.csv` — Home, About, Wholesale, Contact, Services, Cases, Terms, Privacy, Cookies (rewrite before launch)
 - `docs/examples/projects.csv` — 10 English cases scraped from norhageindustri.com/projects/ (no photos; rewrite before launch)
+- `docs/examples/wholesale_catalogs.csv` — two live wholesale lines (tapes, vent openers); PDFs uploaded in admin
 
 After `seed_catalog`:
 
@@ -63,9 +65,10 @@ After `seed_catalog`:
 python manage.py import_products_csv
 python manage.py import_pages_csv
 python manage.py import_projects_csv
+python manage.py import_wholesale_csv
 ```
 
-Or in admin: Products / Pages / Projects → Import. Re-importing updates by SKU or slug. Project photos are uploaded in admin, not in CSV.
+Or in admin: Products / Pages / Projects / Wholesale catalogs → Import. Re-importing updates by SKU or slug. Project photos and wholesale PDFs are uploaded in admin, not in CSV.
 
 Public product URLs use the SKU: `/products/<sku>/`.
 
@@ -74,7 +77,7 @@ Public product URLs use the SKU: `/products/<sku>/`.
 - `config/` — project settings, URLs, WSGI/ASGI
 - `accounts/` — custom user model (staff only, no public signup)
 - `core/` — shared context and error pages
-- `pages/` — homepage, CMS pages, services, and projects
+- `pages/` — homepage, CMS pages, services, projects, and wholesale catalogs
 - `products/` — categories, products, images, and documents
 - `quotes/` — contact and quote request forms (stored in admin, emailed to sales)
 - `templates/` and `static/` — public layout
