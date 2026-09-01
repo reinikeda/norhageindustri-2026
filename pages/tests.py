@@ -22,6 +22,7 @@ class PagesTests(TestCase):
         self.assertContains(response, "linkedin.com/company/norhage-industri-norge")
         self.assertContains(response, "youtube.com/@norhage_industri")
         self.assertContains(response, "facebook.com/people/Norhage-Industri")
+        self.assertContains(response, "911 648 032")
 
     def test_key_pages_render(self):
         names = [
@@ -114,6 +115,10 @@ class CmsPageTests(TestCase):
         self.assertContains(response, "About TEHI AS")
         self.assertContains(response, "Edited in admin.")
         self.assertContains(response, "Body copy from admin.")
+        self.assertContains(response, "How we work")
+        self.assertContains(response, "911 648 032")
+        self.assertContains(response, "There is no public showroom")
+        self.assertNotContains(response, 'name="subject"')
 
     def test_unpublished_cms_page_uses_fallback_copy(self):
         Page.objects.create(
@@ -127,6 +132,31 @@ class CmsPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "About Norhage Industri")
         self.assertNotContains(response, "Hidden heading")
+
+    def test_wordpress_about_us_url_redirects(self):
+        response = self.client.get("/about-us/")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], reverse("pages:about"))
+
+    def test_about_shows_published_projects_and_hides_drafts(self):
+        shown = Project.objects.create(
+            title="Rogaland assembly",
+            slug="rogaland-assembly",
+            summary="On-site greenhouse assembly.",
+            country="Norway",
+            year=2024,
+            work_type=Project.WorkType.ASSEMBLY,
+            is_published=True,
+        )
+        Project.objects.create(
+            title="Hidden draft case",
+            slug="hidden-draft-case",
+            is_published=False,
+        )
+        response = self.client.get(reverse("pages:about"))
+        self.assertContains(response, shown.title)
+        self.assertContains(response, "Selected projects")
+        self.assertNotContains(response, "Hidden draft case")
 
     def test_unpublished_service_and_project_are_404(self):
         service = Service.objects.create(
@@ -232,6 +262,21 @@ class CmsPageTests(TestCase):
         self.assertTrue(WholesaleCatalog.objects.filter(slug="aluminium-sealing-tapes").exists())
         self.assertTrue(WholesaleCatalog.objects.filter(slug="automatic-vent-openers").exists())
 
+    def test_seed_replaces_wordpress_about_copy(self):
+        Page.objects.create(
+            slug="about",
+            title="About us",
+            heading="About Us",
+            lead="Old lead.",
+            body="Our Story\n\nWhy Choose Norhage Industri?\n\nLet’s Connect",
+            is_published=True,
+        )
+        call_command("seed_catalog", verbosity=0)
+        page = Page.objects.get(slug="about")
+        self.assertEqual(page.heading, "About Norhage Industri")
+        self.assertNotIn("Our Story", page.body)
+        self.assertIn("no public showroom", page.body)
+
     def test_home_shows_featured_products(self):
         product = Product.objects.create(
             sku="FEAT-1",
@@ -323,7 +368,8 @@ class ExamplePagesCsvTests(TestCase):
         privacy = Page.objects.get(slug="privacy")
         self.assertIn("personal data", privacy.lead.lower())
         response = self.client.get(reverse("pages:about"))
-        self.assertContains(response, "Our Story")
+        self.assertContains(response, "How we work")
+        self.assertNotContains(response, "Our Story")
         wholesale = Page.objects.get(slug="wholesale")
         self.assertNotIn("Aluminium sealing tapes", wholesale.body)
         self.assertIn("catalog pdf", wholesale.body.lower())

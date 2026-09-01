@@ -60,6 +60,36 @@ class CmsPageView(TemplateView):
         return context
 
 
+class AboutPageView(CmsPageView):
+    template_name = "pages/about.html"
+    page_slug = "about"
+    fallback = {
+        "title": "About us",
+        "meta_description": "Norhage Industri is the B2B brand of TEHI AS, supplying industrial materials and services across Europe.",
+        "heading": "About Norhage Industri",
+        "lead": (
+            "Norhage Industri is a B2B brand of TEHI AS. We supply industrial materials "
+            "and professional services for commercial greenhouse, construction, and manufacturing projects."
+        ),
+        "body": (
+            "There is no public showroom. Materials and assembly are quoted per project and "
+            "delivered to the site. Prices are not published on the website."
+        ),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        heading = context.get("heading") or "About Norhage Industri"
+        context["breadcrumbs"] = [
+            {"label": "Home", "url": "/"},
+            {"label": heading, "url": ""},
+        ]
+        context["recent_projects"] = list(
+            Project.objects.filter(is_published=True).prefetch_related("images")[:3]
+        )
+        return context
+
+
 class WholesalePageView(CmsPageView):
     template_name = "pages/wholesale.html"
     page_slug = "wholesale"

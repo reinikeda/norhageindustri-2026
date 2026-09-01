@@ -1,8 +1,10 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from quotes.views import ContactPageView, QuotePageView
 
 from .views import (
+    AboutPageView,
     CmsPageView,
     HomeView,
     ProjectDetailView,
@@ -30,19 +32,11 @@ urlpatterns = [
     path("services/<slug:slug>/", ServiceDetailView.as_view(), name="service_detail"),
     path("wholesale/", WholesalePageView.as_view(), name="wholesale"),
     path(
-        "about/",
-        CmsPageView.as_view(
-            page_slug="about",
-            fallback={
-                "title": "About us",
-                "meta_description": "Norhage Industri is the B2B brand of TEHI AS, supplying industrial materials and services across Europe.",
-                "heading": "About Norhage Industri",
-                "lead": "Norhage Industri is a B2B brand of TEHI AS. We supply industrial materials and professional services for commercial greenhouse, construction, and manufacturing projects.",
-                "body": "Prices are quoted for each project. You can browse the catalog, select products, and ask for a quote — no customer account is required.",
-            },
-        ),
-        name="about",
+        "about-us/",
+        RedirectView.as_view(pattern_name="pages:about", permanent=False),
+        name="about_legacy",
     ),
+    path("about/", AboutPageView.as_view(), name="about"),
     path("contact/", ContactPageView.as_view(), name="contact"),
     path("quote/", QuotePageView.as_view(), name="quote"),
     path(

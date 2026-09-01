@@ -30,6 +30,7 @@ def site_graph(request):
                 "@id": org_id,
                 "name": "Norhage Industri",
                 "legalName": "TEHI AS",
+                "identifier": "911 648 032",
                 "url": origin,
                 "email": "info@norhageindustri.com",
                 "telephone": "+47 940 23 135",

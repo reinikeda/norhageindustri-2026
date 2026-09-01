@@ -5,6 +5,8 @@ from .seo import absolute_path, default_share_image, site_json_ld
 def site(request):
     return {
         "company_name": "Norhage Industri",
+        "company_legal_name": "TEHI AS",
+        "company_org_number": "911 648 032",
         "company_tagline": "Greenhouses and plastic experts",
         "company_phone": "+47 940 23 135",
         "company_email": "info@norhageindustri.com",

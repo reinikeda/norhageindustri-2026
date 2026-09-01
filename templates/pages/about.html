@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page about-page">
+    {% include "includes/breadcrumbs.html" %}
+    <p class="eyebrow">TEHI AS · Norway</p>
+    <h1>{{ heading }}</h1>
+    {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+
+    <ul class="fact-strip">
+        <li>
+            <strong>ISO 9001:2015</strong>
+            <span>Quality standard</span>
+        </li>
+        <li>
+            <strong>700+</strong>
+            <span>Greenhouses built</span>
+        </li>
+        <li>
+            <strong>2013</strong>
+            <span>TEHI AS registered in Norway</span>
+        </li>
+    </ul>
+
+    {% if page and page.image %}
+        <figure class="about-photo">
+            <img class="page-image" src="{{ page.image.url }}" alt="{{ heading }}">
+            <figcaption>Project photography. We do not publish office or staff portraits.</figcaption>
+        </figure>
+    {% endif %}
+
+    {% if body %}<div class="page-body">{{ body|linebreaks }}</div>{% endif %}
+
+    <section class="about-section" aria-labelledby="work-heading">
+        <h2 id="work-heading">How we work</h2>
+        <ol class="work-steps">
+            <li>
+                <h3>Specify</h3>
+                <p>Browse solutions, services, and wholesale catalogs. Specifications and PDFs are public. Prices are not.</p>
+            </li>
+            <li>
+                <h3>Quote</h3>
+                <p>Send products, quantities, and destination. Sales replies from {{ company_email }}. No customer account is required.</p>
+            </li>
+            <li>
+                <h3>Deliver on site</h3>
+                <p>Materials and assembly go to the project. There is no public showroom — the registered office is in Bryne, and the work is on customer sites across Europe.</p>
+            </li>
+        </ol>
+    </section>
+
+    <section class="about-section" aria-labelledby="supply-heading">
+        <h2 id="supply-heading">What we supply</h2>
+        <div class="card-grid">
+            <a class="card card-link" href="{% url 'pages:solutions' %}">
+                <h3>Solutions &amp; products</h3>
+                <p>Industrial greenhouse systems, technical plastics, polycarbonate, metals, and related materials, quoted per project.</p>
+            </a>
+            <a class="card card-link" href="{% url 'pages:services' %}">
+                <h3>Services</h3>
+                <p>Assembly, renovation, repair, and precision cutting, machining, and bending of technical plastics.</p>
+            </a>
+            <a class="card card-link" href="{% url 'pages:wholesale' %}">
+                <h3>Wholesale</h3>
+                <p>Distributor catalogs without public prices. Volume terms are confirmed on the quote.</p>
+            </a>
+        </div>
+    </section>
+
+    {% if recent_projects %}
+        <section class="about-section" aria-labelledby="proof-heading">
+            <h2 id="proof-heading">Selected projects</h2>
+            <p class="muted">Real jobs, not studio photography. More in Cases &amp; projects.</p>
+            <div class="card-grid project-card-grid">
+                {% for project in recent_projects %}
+                    <a class="card card-link project-card" href="{{ project.get_absolute_url }}">
+                        {% if project.cover_image %}
+                            <img src="{{ project.cover_image.url }}" alt="">
+                        {% else %}
+                            <div class="product-photo-empty product-photo-empty-card" aria-hidden="true">
+                                <span>{{ project.work_type|default:"Project"|title }}</span>
+                                <small>Photo on request</small>
+                            </div>
+                        {% endif %}
+                        <h3>{{ project.title }}</h3>
+                        {% if project.country or project.year %}
+                            <p class="muted">{% if project.country %}{{ project.country }}{% endif %}{% if project.country and project.year %} · {% endif %}{% if project.year %}{{ project.year }}{% endif %}</p>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+            <p><a class="text-link" href="{% url 'pages:cases' %}">View cases &amp; projects</a></p>
+        </section>
+    {% endif %}
+
+    <section class="about-section identity" aria-labelledby="company-heading">
+        <h2 id="company-heading">Company</h2>
+        <p>Norhage Industri is the B2B brand of TEHI AS. Related companies appear on other country sites; this English site is TEHI AS in Norway.</p>
+        <ul class="contact-list identity-list">
+            <li><strong>Legal name</strong> {{ company_legal_name }}</li>
+            <li><strong>Organisation number</strong> {{ company_org_number }}</li>
+            <li><strong>Registered</strong> 16 January 2013</li>
+            <li><strong>Address</strong> {{ company_address }}</li>
+            <li><strong>Email</strong> <a href="mailto:{{ company_email }}">{{ company_email }}</a></li>
+            <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a></li>
+        </ul>
+        <p class="muted">The address is the registered office. It is not a walk-in showroom.</p>
+    </section>
+
+    <p class="page-cta">
+        <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+        <a class="button button-secondary" href="{% url 'pages:contact' %}">Contact</a>
+    </p>
+</article>
+{% endblock %}

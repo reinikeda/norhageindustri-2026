@@ -43,8 +43,8 @@ PAGE_DEFAULTS = [
             "and professional services for commercial greenhouse, construction, and manufacturing projects."
         ),
         "body": (
-            "Prices are quoted for each project. You can browse the catalog, select products, "
-            "and ask for a quote — no customer account is required."
+            "There is no public showroom. Materials and assembly are quoted per project and "
+            "delivered to the site. Prices are not published on the website."
         ),
         "seo_title": "",
         "seo_description": "Norhage Industri is the B2B brand of TEHI AS, supplying industrial materials and services across Europe.",
@@ -260,6 +260,18 @@ class Command(BaseCommand):
                 page.seo_description = data["seo_description"]
                 page.body = data.get("body", "")
                 page.save(update_fields=["lead", "seo_description", "body"])
+            elif page.slug == "about" and (
+                "Our Story" in body
+                or "Why Choose Norhage" in body
+                or "Let’s Connect" in body
+                or "Let's Connect" in body
+                or "Prices are quoted for each project. You can browse the catalog" in body
+            ):
+                page.heading = data["heading"]
+                page.lead = data["lead"]
+                page.body = data["body"]
+                page.seo_description = data["seo_description"]
+                page.save(update_fields=["heading", "lead", "body", "seo_description"])
             elif page.slug == "wholesale" and (
                 "Aluminium sealing tapes" in body
                 or "Automatic vent openers" in body

@@ -53,7 +53,8 @@ Must ship:
 - English website on norhageindustri.com
 - Homepage and informational pages (About, Services, Contact, Wholesale, Terms, Privacy, Cookies)
 - Wholesale as **one landing page** (`/wholesale/`) with catalog cards and PDF downloads. Do not create `/wholesale/<slug>/` until there are enough lines to need them. Public PDFs have **no prices**.
-- Company identity on Contact/footer (legal name, address, email, phone; add organisation number when rewriting)
+- Company identity on Contact, About, and footer (legal name, organisation number, address, email, phone)
+- About is a **company page**, not a second catalog: who we are, how quoting/site work works, and links to cases. Do **not** use generated office or employee photos, and do **not** invent a year-by-year timeline unless dates are confirmed.
 - Product categories and product catalog
 - Product detail pages
 - No public prices
@@ -95,7 +96,7 @@ The English site (TEHI AS, Norway) needs:
 | Privacy | GDPR / Norwegian personal data rules. Quote and contact forms store name, company, email, phone. |
 | Cookies | Required if you use cookies. MVP session cookie can stay a short page; a consent banner is only needed when analytics or ads are added. |
 | Terms | Not a statutory “must have” for a catalog without checkout, but expected. Governs use of the site and inquiries. |
-| Contact / About | Company identification: legal name, geographic address, email, phone. Add the Norwegian organisation number when the copy is rewritten. |
+| Contact / About | Company identification: legal name TEHI AS, organisation number **911 648 032**, geographic address, email, phone. |
 
 **Imprint / Impressum is not an English-page requirement.** It is a German statutory page (DDG, formerly TMG). The live German site already has it at [norhageindustri.de/impressum](https://norhageindustri.de/impressum/) for **Tehi UG** in Wiesbaden — a different legal entity than TEHI AS. Do not copy that text onto norhageindustri.com. Add Impressum when the German domain is rebuilt.
 

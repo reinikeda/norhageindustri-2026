@@ -48,7 +48,7 @@ Use Django admin for day-to-day work:
 
 - **Products** — SKU, text, several subcategories, photos, and PDFs
 - **Categories** — industry / material / system topics (and optional child subcategories)
-- **Pages** — heading, lead, body, and image for Home, Solutions, About, Wholesale, Contact, Quote, Services, Cases, Terms, Privacy, Cookies
+- **Pages** — heading, lead, body, and image for Home, Solutions, About, Wholesale, Contact, Quote, Services, Cases, Terms, Privacy, Cookies. About should use a real project photo if anything; do not upload generated office or staff images.
 - **Wholesale catalogs** — name, pitch, PDF, and optional cover on the single `/wholesale/` page (upload the PDF in admin; do not commit live catalog files)
 - **Services** and **Projects** — list + detail pages
 
