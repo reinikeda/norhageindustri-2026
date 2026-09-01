@@ -541,7 +541,13 @@ h1 {
 }
 
 .home-offer-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 1100px) {
+    .home-offer-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .home-offer {
@@ -619,7 +625,7 @@ h1 {
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
     gap: 1rem;
 }
 
@@ -1505,8 +1511,7 @@ select {
         grid-template-columns: 1fr;
     }
 
-    .work-steps,
-    .home-offer-grid {
+    .work-steps {
         grid-template-columns: 1fr 1fr;
     }
 
