@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    <h1>Something went wrong</h1>
+    <p class="lead">The site could not complete that request. Try again, or contact us if it continues.</p>
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:home' %}">Back to home</a></p>
+</article>
+{% endblock %}

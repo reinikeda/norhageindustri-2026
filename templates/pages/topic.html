@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="catalog topic-page">
+    {% include "includes/breadcrumbs.html" %}
+    <header class="topic-header">
+        {% if group_title %}<p class="eyebrow">{{ group_title }}</p>{% endif %}
+        <h1>{{ heading }}</h1>
+        {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+        <p class="muted">
+            {% if product_count %}
+                {{ product_count }} published product{{ product_count|pluralize }}
+            {% else %}
+                No published products in this topic yet
+            {% endif %}
+            · Prices quoted per project
+        </p>
+    </header>
+    {% if category and category.image %}
+        <img class="page-image topic-image" src="{{ category.image.url }}" alt="{{ heading }}">
+    {% endif %}
+
+    {% if products %}
+        <h2 class="visually-hidden">Published products</h2>
+        <div class="card-grid product-card-grid">
+            {% for product in products %}
+                <a class="card card-link product-card" href="{{ product.get_absolute_url }}">
+                    {% if product.main_image %}
+                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="product-photo-empty product-photo-empty-card" aria-hidden="true">{{ product.sku }}</div>
+                    {% endif %}
+                    <h3 class="product-card-title">{{ product.name }}</h3>
+                    {% if product.short_description %}
+                        <p>{{ product.short_description|truncatewords:22 }}</p>
+                    {% endif %}
+                    <p class="muted">SKU {{ product.sku }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Ask for a quote and we will match materials, systems, and quantities for this topic.</p>
+    {% endif %}
+
+    {% if sibling_categories %}
+        <section class="product-section" aria-labelledby="related-topics-heading">
+            <h2 id="related-topics-heading">Related topics</h2>
+            <ul class="product-tags topic-tags">
+                {% for item in sibling_categories %}
+                    <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

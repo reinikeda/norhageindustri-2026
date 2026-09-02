@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">B2B · TEHI AS · Norway</p>
+            <h1>{{ home_heading|default:"Industrial greenhouse systems and technical materials for commercial projects." }}</h1>
+            <p class="lead">{{ home_lead|default:"We supply contractors and growers across Europe. Browse the catalog, then ask for a quote — prices are not published." }}</p>
+            <ul class="hero-trust">
+                <li>Project quantities</li>
+                <li>Prices on request</li>
+                <li>Work on the site</li>
+            </ul>
+            <div class="hero-actions">
+                <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+                <a class="button button-ghost" href="{% url 'pages:solutions' %}">Browse solutions</a>
+                <a class="button button-ghost" href="tel:+4794023135">Call {{ company_phone }}</a>
+            </div>
+        </div>
+        <div class="hero-panel">
+            {% if page and page.image %}
+                <img class="hero-image" src="{{ page.image.url }}" alt="">
+            {% endif %}
+            <a class="hero-tile" href="{% url 'pages:solution_topic' group='system' slug='turnkey-facilities' %}">
+                <span class="hero-tile-kicker">Greenhouses</span>
+                <strong>Turnkey facilities</strong>
+                <span>Commercial structures, cladding, and climate systems</span>
+            </a>
+            <a class="hero-tile" href="{% url 'pages:solution_topic' group='material' slug='polycarbonate' %}">
+                <span class="hero-tile-kicker">Sheets &amp; façades</span>
+                <strong>Polycarbonate</strong>
+                <span>Multiwall and solid sheet with matching profiles and tapes</span>
+            </a>
+            <a class="hero-tile" href="{% url 'pages:solution_topic' group='material' slug='technical-plastics' %}">
+                <span class="hero-tile-kicker">Materials</span>
+                <strong>Technical plastics</strong>
+                <span>Cutting, machining, and bending to drawing</span>
+            </a>
+            <a class="hero-tile" href="{% url 'pages:services' %}">
+                <span class="hero-tile-kicker">On site</span>
+                <strong>Assembly &amp; repair</strong>
+                <span>Installation and renovation on the customer’s site</span>
+            </a>
+        </div>
+    </div>
+    <ul class="stats">
+        <li>
+            <strong>ISO 9001:2015</strong>
+            <span>Quality standard</span>
+        </li>
+        <li>
+            <strong>700+</strong>
+            <span>Greenhouses built</span>
+        </li>
+        <li>
+            <strong>10+</strong>
+            <span>Years supplying projects</span>
+        </li>
+    </ul>
+    <nav class="home-sectors" aria-label="Industries we supply">
+        <a href="{% url 'pages:solution_topic' group='industry' slug='food-manufacturing' %}">Food manufacturing</a>
+        <a href="{% url 'pages:solution_topic' group='industry' slug='building-architecture' %}">Building &amp; architecture</a>
+        <a href="{% url 'pages:solution_topic' group='industry' slug='offshore-maritime' %}">Offshore &amp; maritime</a>
+        <a href="{% url 'pages:solution_topic' group='industry' slug='logistics-warehousing' %}">Logistics</a>
+        <a href="{% url 'pages:solution_topic' group='industry' slug='signage-advertisement' %}">Signage</a>
+    </nav>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">Supply</p>
+        <h2>What we sell and install</h2>
+        <p class="section-intro">One B2B catalog for commercial greenhouse work, technical plastics, and related construction materials. Volume prices stay on the quote.</p>
+    </div>
+    <div class="card-grid home-offer-grid">
+        <a class="card card-link home-offer" href="{% url 'pages:solution_topic' group='system' slug='turnkey-facilities' %}">
+            <p class="home-offer-kicker">01</p>
+            <h3>Commercial greenhouses</h3>
+            <p>Robust systems for agricultural and industrial use, including related automation and sealing products.</p>
+        </a>
+        <a class="card card-link home-offer" href="{% url 'pages:solution_topic' group='material' slug='technical-plastics' %}">
+            <p class="home-offer-kicker">02</p>
+            <h3>Technical plastics</h3>
+            <p>High-performance plastics for demanding applications, including cutting, machining, and bending.</p>
+        </a>
+        <a class="card card-link home-offer" href="{% url 'pages:solution_topic' group='material' slug='polycarbonate' %}">
+            <p class="home-offer-kicker">03</p>
+            <h3>Polycarbonate sheets</h3>
+            <p>Durable sheeting and façade solutions with matching profiles and sealing tapes.</p>
+        </a>
+        <a class="card card-link home-offer" href="{% url 'pages:solution_topic' group='material' slug='industrial-rubbers-mats' %}">
+            <p class="home-offer-kicker">04</p>
+            <h3>Rubber, profiles, and fasteners</h3>
+            <p>Construction and installation materials supplied for project quantities, quoted per request.</p>
+        </a>
+    </div>
+</section>
+
+{% if featured_products %}
+<section class="section section-muted">
+    <div class="section-heading">
+        <p class="eyebrow">Catalog</p>
+        <h2>From the catalog</h2>
+        <p class="section-intro">Published products selected for the homepage. Ask for a quote with SKU and quantity.</p>
+    </div>
+    <div class="card-grid product-card-grid">
+        {% for product in featured_products %}
+            <a class="card card-link product-card" href="{{ product.get_absolute_url }}">
+                {% if product.main_image %}
+                    <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.short_description|truncatewords:22 }}</p>
+            </a>
+        {% endfor %}
+    </div>
+    <p><a class="text-link" href="{% url 'pages:solutions' %}">Browse all solutions</a></p>
+</section>
+{% endif %}
+
+<section class="section{% if not featured_products %} section-muted{% endif %}">
+    <div class="section-heading">
+        <p class="eyebrow">On site</p>
+        <h2>Services</h2>
+        <p class="section-intro">Assembly and fabrication on the project — not a public showroom.</p>
+    </div>
+    <div class="split">
+        {% if published_services %}
+            {% for service in published_services %}
+                <article class="split-card">
+                    {% if service.image %}<img src="{{ service.image.url }}" alt="{{ service.name }}">{% endif %}
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.summary|truncatewords:28 }}</p>
+                    <p><a class="text-link" href="{{ service.get_absolute_url }}">Read more</a></p>
+                </article>
+            {% endfor %}
+        {% else %}
+            <article class="split-card">
+                <h3>Greenhouse assembly and repair</h3>
+                <p>On-site work from installation through maintenance for commercial greenhouse projects.</p>
+            </article>
+            <article class="split-card">
+                <h3>Precision plastics work</h3>
+                <p>Cutting, machining, and bending of technical plastics to project specifications.</p>
+            </article>
+        {% endif %}
+    </div>
+    <p><a class="text-link" href="{% url 'pages:services' %}">Read about services</a></p>
+</section>
+
+{% if recent_projects %}
+<section class="section{% if featured_products %} section-muted{% endif %}">
+    <div class="section-heading">
+        <p class="eyebrow">Proof</p>
+        <h2>Recent projects</h2>
+        <p class="section-intro">Real jobs. Photos are uploaded when we have them — we do not use generated site pictures.</p>
+    </div>
+    <div class="card-grid project-card-grid">
+        {% for project in recent_projects %}
+            <a class="card card-link project-card" href="{{ project.get_absolute_url }}">
+                {% if project.cover_image %}
+                    <img src="{{ project.cover_image.url }}" alt="">
+                {% else %}
+                    <div class="product-photo-empty product-photo-empty-card" aria-hidden="true">
+                        <span>{{ project.work_type|default:"Project"|title }}</span>
+                        <small>Photo on request</small>
+                    </div>
+                {% endif %}
+                <h3>{{ project.title }}</h3>
+                {% if project.country or project.year %}
+                    <p class="muted">{% if project.country %}{{ project.country }}{% endif %}{% if project.country and project.year %} · {% endif %}{% if project.year %}{{ project.year }}{% endif %}</p>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+    <p><a class="text-link" href="{% url 'pages:cases' %}">View cases &amp; projects</a></p>
+</section>
+{% endif %}
+
+<section class="section{% if not featured_products %} section-muted{% endif %}">
+    <div class="section-heading">
+        <p class="eyebrow">Process</p>
+        <h2>How a project starts</h2>
+    </div>
+    <ol class="work-steps">
+        <li>
+            <h3>Specify</h3>
+            <p>Open a topic or product. Specifications and PDFs are public. Prices are not.</p>
+        </li>
+        <li>
+            <h3>Quote</h3>
+            <p>Send SKUs, quantities, and destination. Sales replies from {{ company_email }}.</p>
+        </li>
+        <li>
+            <h3>Deliver</h3>
+            <p>Materials and assembly go to the site. No customer account is required.</p>
+        </li>
+    </ol>
+</section>
+
+<section class="cta-band">
+    <div class="cta-inner">
+        <p class="eyebrow">Next step</p>
+        <h2>Need materials or assembly for a site?</h2>
+        <p>Tell us the products, quantities, and destination. Or call {{ company_phone }}.</p>
+        <div class="hero-actions cta-actions">
+            <a class="button button-accent" href="{% url 'pages:quote' %}">Ask for a quote</a>
+            <a class="button button-ghost" href="{% url 'pages:contact' %}">Contact</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="catalog project-index">
+    {% include "includes/breadcrumbs.html" %}
+    {% if page and page.image %}
+        <img class="page-image" src="{{ page.image.url }}" alt="{{ heading }}">
+    {% endif %}
+    <h1>{{ heading }}</h1>
+    {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+    {% if page and page.body %}<div class="page-body">{{ page.body|linebreaks }}</div>{% endif %}
+
+    {% if filter_types or filter_countries or filter_years %}
+        <form class="project-filters" method="get">
+            <p class="project-filters-label">Filter projects</p>
+            <div class="project-filters-row">
+                <label>
+                    Type
+                    <select name="type">
+                        <option value="">All types</option>
+                        {% for value, label in filter_types %}
+                            <option value="{{ value }}"{% if selected.type == value %} selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    Country
+                    <select name="country">
+                        <option value="">All countries</option>
+                        {% for country in filter_countries %}
+                            <option value="{{ country }}"{% if selected.country == country %} selected{% endif %}>{{ country }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    Year
+                    <select name="year">
+                        <option value="">All years</option>
+                        {% for year in filter_years %}
+                            <option value="{{ year }}"{% if selected.year == year|stringformat:"s" %} selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <button class="button button-secondary" type="submit">Apply</button>
+                {% if is_filtered %}
+                    <a class="text-link" href="{% url 'pages:cases' %}">Clear</a>
+                {% endif %}
+            </div>
+        </form>
+    {% endif %}
+
+    <p class="muted project-count">
+        {% if result_count == 1 %}1 published project{% else %}{{ result_count }} published projects{% endif %}
+        {% if is_filtered %} matching these filters{% endif %}
+    </p>
+
+    {% if projects %}
+        <h2 class="visually-hidden">Published projects</h2>
+        <div class="card-grid project-card-grid">
+            {% for project in projects %}
+                <a class="card card-link project-card" href="{{ project.get_absolute_url }}">
+                    {% if project.cover_image %}
+                        <img src="{{ project.cover_image.url }}" alt="">
+                    {% else %}
+                        <div class="product-photo-empty product-photo-empty-card" aria-hidden="true">
+                            <span>{{ project.work_type|default:"Project"|title }}</span>
+                            <small>Photo on request</small>
+                        </div>
+                    {% endif %}
+                    <ul class="project-chips">
+                        {% if project.work_type %}<li>{{ project.get_work_type_display }}</li>{% endif %}
+                        {% if project.country %}<li>{{ project.country }}</li>{% endif %}
+                        {% if project.year %}<li>{{ project.year }}</li>{% endif %}
+                    </ul>
+                    <h3>{{ project.title }}</h3>
+                    {% if project.dimensions %}<p class="muted">{{ project.dimensions }}</p>{% endif %}
+                    {% if project.summary %}<p>{{ project.summary|truncatewords:28 }}</p>{% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% if is_filtered %}No published projects match these filters.{% else %}Project stories will appear here once they are published in admin.{% endif %}</p>
+    {% endif %}
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'js/product.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<article class="catalog project-page">
+    {% include "includes/breadcrumbs.html" %}
+    <div class="product-hero">
+        <div class="product-gallery{% if project.image_list|length == 1 %} is-single{% endif %}" data-product-gallery>
+            {% if project.image_list %}
+                <figure class="product-gallery-main">
+                    <img
+                        src="{{ project.image_list.0.file.url }}"
+                        alt="{{ project.image_list.0.alt_text|default:project.title }}"
+                        data-gallery-main
+                    >
+                </figure>
+                {% if project.image_list|length > 1 %}
+                    <ul class="product-thumbs" role="list">
+                        {% for image in project.image_list %}
+                            <li>
+                                <button
+                                    type="button"
+                                    class="product-thumb{% if forloop.first %} is-active{% endif %}"
+                                    data-gallery-src="{{ image.file.url }}"
+                                    data-gallery-alt="{{ image.alt_text|default:project.title }}"
+                                    aria-label="Show image {{ forloop.counter }}"
+                                >
+                                    <img src="{{ image.file.url }}" alt="">
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% elif project.image %}
+                <figure class="product-gallery-main">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                </figure>
+            {% else %}
+                <div class="product-photo-empty" aria-hidden="true">
+                    <span>{{ project.get_work_type_display|default:"Project" }}</span>
+                    <small>Photos on request</small>
+                </div>
+            {% endif %}
+        </div>
+        <div class="product-summary">
+            {% if project.work_type %}<p class="eyebrow">{{ project.get_work_type_display }}</p>{% endif %}
+            <h1>{{ project.title }}</h1>
+            {% if project.summary %}<p class="lead">{{ project.summary|linebreaksbr }}</p>{% endif %}
+            {% if project.fact_rows %}
+                <table class="spec-table project-facts">
+                    <caption class="visually-hidden">Project facts</caption>
+                    <tbody>
+                        {% for label, value in project.fact_rows %}
+                            <tr>
+                                <th scope="row">{{ label }}</th>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            <div class="product-summary-actions">
+                <a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a>
+                <a class="button button-secondary" href="{% url 'pages:cases' %}">All projects</a>
+            </div>
+        </div>
+    </div>
+
+    {% if project.body %}
+        <section class="product-section" aria-labelledby="project-overview">
+            <h2 id="project-overview">What was done</h2>
+            <div class="page-body">{{ project.body|linebreaks }}</div>
+        </section>
+    {% endif %}
+
+    {% if related_projects %}
+        <section class="product-section" aria-labelledby="related-projects">
+            <h2 id="related-projects">Related projects</h2>
+            <div class="card-grid project-card-grid">
+                {% for item in related_projects %}
+                    <a class="card card-link project-card" href="{{ item.get_absolute_url }}">
+                        {% if item.cover_image %}
+                            <img src="{{ item.cover_image.url }}" alt="">
+                        {% endif %}
+                        <h3>{{ item.title }}</h3>
+                        <p class="muted">
+                            {{ item.get_work_type_display }}
+                            {% if item.country %} · {{ item.country }}{% endif %}
+                            {% if item.year %} · {{ item.year }}{% endif %}
+                        </p>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</article>
+<section class="cta-band product-cta">
+    <div class="cta-inner">
+        <h2>Planning a similar project?</h2>
+        <p>Tell us the site, size, and what needs to be assembled or renovated. Sales replies from {{ company_email }}.</p>
+        <a class="button button-accent" href="{% url 'pages:quote' %}">Ask for a quote</a>
+    </div>
+</section>
+{% endblock %}

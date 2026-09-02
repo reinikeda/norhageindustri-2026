@@ -1,0 +1,17 @@
+{{ form.non_field_errors }}
+{% for field in form.visible_fields %}
+    {% if field.name == "website" %}
+        <p class="hp-field" aria-hidden="true">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+        </p>
+    {% else %}
+        <p class="form-field">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+            </label>
+            {{ field }}
+            {{ field.errors }}
+        </p>
+    {% endif %}
+{% endfor %}

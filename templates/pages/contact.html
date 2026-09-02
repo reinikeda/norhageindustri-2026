@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page inquiry-page">
+    {% if page and page.image %}
+        <img class="page-image" src="{{ page.image.url }}" alt="{{ heading|default:'Contact' }}">
+    {% endif %}
+    <h1>{{ heading|default:"Contact" }}</h1>
+    <p class="lead">{{ lead|default:"Use these details for technical questions or a project discussion." }}</p>
+    {% if body %}<div class="page-body">{{ body|linebreaks }}</div>{% endif %}
+    <div class="inquiry-layout">
+        <div class="inquiry-aside">
+            <ul class="contact-list">
+                <li><strong>Legal name</strong> {{ company_legal_name }}</li>
+                <li><strong>Organisation number</strong> {{ company_org_number }}</li>
+                <li><strong>Email</strong> <a href="mailto:{{ company_email }}">{{ company_email }}</a></li>
+                <li><strong>Phone</strong> <a href="tel:+4794023135">{{ company_phone }}</a>{% if company_phone_alt %} or <a href="tel:+4798367181">{{ company_phone_alt }}</a>{% endif %}</li>
+                <li><strong>Address</strong> {{ company_address }}</li>
+            </ul>
+            <p class="muted">Registered office in Bryne. There is no public showroom.</p>
+            <p>For products, quantities, and a project price, use <a href="{% url 'pages:quote' %}">Ask for a quote</a>.</p>
+        </div>
+        <div class="inquiry-form">
+            <h2>Send a message</h2>
+            <p class="muted">No account is required. Sales replies from {{ company_email }}.</p>
+            <form method="post">
+                {% csrf_token %}
+                {% include "includes/inquiry_fields.html" %}
+                <p>
+                    <button class="button button-primary" type="submit">Send message</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</article>
+{% endblock %}

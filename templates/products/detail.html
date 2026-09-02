@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'js/product.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<article class="catalog product-page">
+    {% include "includes/breadcrumbs.html" %}
+    <div class="product-hero">
+        <div class="product-gallery{% if product.image_list|length == 1 %} is-single{% endif %}" data-product-gallery>
+            {% if product.image_list %}
+                <figure class="product-gallery-main">
+                    <img
+                        src="{{ product.image_list.0.file.url }}"
+                        alt="{{ product.image_list.0.alt_text|default:product.name }}"
+                        data-gallery-main
+                    >
+                </figure>
+                {% if product.image_list|length > 1 %}
+                    <ul class="product-thumbs" role="list">
+                        {% for image in product.image_list %}
+                            <li>
+                                <button
+                                    type="button"
+                                    class="product-thumb{% if forloop.first %} is-active{% endif %}"
+                                    data-gallery-src="{{ image.file.url }}"
+                                    data-gallery-alt="{{ image.alt_text|default:product.name }}"
+                                    aria-label="Show image {{ forloop.counter }}"
+                                >
+                                    <img src="{{ image.file.url }}" alt="">
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% else %}
+                <div class="product-photo-empty" aria-hidden="true">
+                    <span>{{ product.sku }}</span>
+                    <small>Image on request</small>
+                </div>
+            {% endif %}
+        </div>
+        <div class="product-summary">
+            <p class="eyebrow">SKU {{ product.sku }}</p>
+            <h1>{{ product.name }}</h1>
+            {% if product.categories.all %}
+                <ul class="product-tags">
+                    {% for category in product.categories.all %}
+                        <li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if product.short_description %}
+                <p class="lead">{{ product.short_description|linebreaksbr }}</p>
+            {% endif %}
+            <p class="muted">No public prices. Quotes are prepared from SKU, quantity, and destination.</p>
+            <div class="product-summary-actions">
+                <a class="button button-primary" href="{{ product.get_quote_url }}">Ask for a quote</a>
+                {% if spec_rows %}<a class="button button-secondary" href="#specifications">Specifications</a>{% endif %}
+                {% if product.documents.all %}<a class="text-link" href="#documents">Datasheets</a>{% endif %}
+            </div>
+            {% if product.documents.all %}
+                <ul class="doc-chips">
+                    {% for doc in product.documents.all %}
+                        <li>
+                            <a href="{{ doc.file.url }}" download>
+                                <span class="doc-kind">{{ doc.file_kind }}</span>
+                                {{ doc.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if product.full_description %}
+        <section class="product-section" aria-labelledby="overview-heading">
+            <h2 id="overview-heading">Overview</h2>
+            <div class="page-body product-copy">{{ product.full_description|linebreaks }}</div>
+        </section>
+    {% endif %}
+
+    {% if spec_rows or spec_notes %}
+        <section class="product-section" id="specifications" aria-labelledby="spec-heading">
+            <h2 id="spec-heading">Technical specifications</h2>
+            {% if spec_rows %}
+                <div class="spec-table-wrap">
+                    <table class="spec-table">
+                        <caption class="visually-hidden">Specifications for {{ product.name }}</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Property</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for label, value in spec_rows %}
+                                <tr>
+                                    <th scope="row">{{ label }}</th>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            {% if spec_notes %}
+                <div class="page-body product-copy">{{ spec_notes|linebreaks }}</div>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    {% if product.documents.all %}
+        <section class="product-section" id="documents" aria-labelledby="docs-heading">
+            <h2 id="docs-heading">Documents</h2>
+            <ul class="doc-list">
+                {% for doc in product.documents.all %}
+                    <li>
+                        <a class="doc-card" href="{{ doc.file.url }}" download>
+                            <span class="doc-kind">{{ doc.file_kind }}</span>
+                            <span>
+                                <strong>{{ doc.title }}</strong>
+                                <span class="muted">Download for project specification</span>
+                            </span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+
+    {% if related_products %}
+        <section class="product-section" aria-labelledby="related-heading">
+            <h2 id="related-heading">Related products</h2>
+            <div class="card-grid product-card-grid">
+                {% for item in related_products %}
+                    <a class="card card-link product-card" href="{{ item.get_absolute_url }}">
+                        {% if item.main_image %}
+                            <img src="{{ item.main_image.url }}" alt="{{ item.name }}">
+                        {% else %}
+                            <div class="product-photo-empty product-photo-empty-card" aria-hidden="true">{{ item.sku }}</div>
+                        {% endif %}
+                        <h3>{{ item.name }}</h3>
+                        <p class="muted">SKU {{ item.sku }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</article>
+<section class="cta-band product-cta">
+    <div class="cta-inner">
+        <h2>Need this product for a project?</h2>
+        <p>Tell us the SKU, quantity, and destination. Sales replies from {{ company_email }}.</p>
+        <a class="button button-accent" href="{{ product.get_quote_url }}">Ask for a quote</a>
+    </div>
+</section>
+<div class="product-sticky-cta">
+    <span>SKU {{ product.sku }}</span>
+    <a class="button button-primary" href="{{ product.get_quote_url }}">Ask for a quote</a>
+</div>
+{% endblock %}

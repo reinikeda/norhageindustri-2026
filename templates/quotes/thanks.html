@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    <h1>Request received</h1>
+    {% if kind == "quote" %}
+        <p class="lead">Thank you. Sales has your quote request and will reply with project pricing.</p>
+    {% else %}
+        <p class="lead">Thank you. We have your message and will reply from {{ company_email }}.</p>
+    {% endif %}
+    <p>No account was created. You can keep browsing the catalog while you wait.</p>
+    <p class="page-cta">
+        <a class="button button-primary" href="{% url 'pages:solutions' %}">Browse solutions</a>
+        <a class="button button-secondary" href="{% url 'pages:home' %}">Back to home</a>
+    </p>
+</article>
+{% endblock %}

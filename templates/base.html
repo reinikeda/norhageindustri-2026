@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}</title>
+    <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
+    <meta name="robots" content="{{ robots|default:'index, follow' }}">
+    {% if 'noindex' not in robots|default:'' %}
+        <link rel="canonical" href="{{ canonical_url|default:request_canonical }}">
+    {% endif %}
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="{{ og_type|default:'website' }}">
+    <meta property="og:site_name" content="{{ company_name }}">
+    <meta property="og:title" content="{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}">
+    <meta property="og:description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
+    {% if 'noindex' not in robots|default:'' %}
+        <meta property="og:url" content="{{ canonical_url|default:request_canonical }}">
+    {% endif %}
+    <meta property="og:image" content="{{ og_image|default:default_og_image }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% if title %}{{ title }} | {{ company_name }}{% else %}{{ company_name }} — {{ company_tagline }}{% endif %}">
+    <meta name="twitter:description" content="{% if meta_description %}{{ meta_description }}{% else %}B2B supplier of industrial greenhouse systems, technical plastics, and façade materials.{% endif %}">
+    <meta name="twitter:image" content="{{ og_image|default:default_og_image }}">
+    {% if site_json_ld %}
+    <script type="application/ld+json">{{ site_json_ld|safe }}</script>
+    {% endif %}
+    {% if json_ld %}
+    <script type="application/ld+json">{{ json_ld|safe }}</script>
+    {% endif %}
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {% include "includes/header.html" %}
+    <main id="main">
+        {% if messages %}
+            <div class="flash-list" role="status">
+                {% for message in messages %}
+                    <p class="flash flash-{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    {% include "includes/footer.html" %}
+    <script src="{% static 'js/nav.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

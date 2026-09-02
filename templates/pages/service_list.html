@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+    {% if page and page.image %}
+        <img class="page-image" src="{{ page.image.url }}" alt="{{ heading }}">
+    {% endif %}
+    <h1>{{ heading }}</h1>
+    {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+    {% if services %}
+        <h2 class="visually-hidden">Published services</h2>
+        <div class="card-grid">
+            {% for service in services %}
+                <a class="card card-link" href="{{ service.get_absolute_url }}">
+                    {% if service.image %}<img src="{{ service.image.url }}" alt="{{ service.name }}">{% endif %}
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.summary|truncatewords:30 }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Services will appear here once they are published in admin.</p>
+    {% endif %}
+    <p class="page-cta"><a class="button button-primary" href="{% url 'pages:quote' %}">Ask for a quote</a></p>
+</article>
+{% endblock %}
