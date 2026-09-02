@@ -5,7 +5,7 @@ from django.db import connection
 from django.test import TestCase, TransactionTestCase
 
 from core.local_schema import catalog_schema_is_current
-from core.menu import find_topic
+from core.menu import MAIN_NAV, find_topic
 from core.validators import validate_document_file, validate_image_file
 from pages.models import Page
 from products.models import Category, Product
@@ -16,6 +16,21 @@ class MenuTests(TestCase):
         topic = find_topic("industry", "food-manufacturing")
         self.assertEqual(topic["label"], "Food Manufacturing")
         self.assertIsNone(find_topic("industry", "missing"))
+
+    def test_main_nav_starts_at_catalog_not_home(self):
+        labels = [item["label"] for item in MAIN_NAV]
+        self.assertNotIn("Home", labels)
+        self.assertEqual(labels[0], "Solutions & Products")
+        self.assertEqual(
+            labels,
+            [
+                "Solutions & Products",
+                "Cases & Projects",
+                "Wholesale",
+                "About us",
+                "Contact",
+            ],
+        )
 
 
 class RebuildLocalSchemaTests(TransactionTestCase):

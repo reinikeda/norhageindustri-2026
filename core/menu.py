@@ -2,11 +2,11 @@
 
 The menu is defined in code, not in Django admin. When the catalog exists,
 these topic URLs can point at real category pages without changing the header
-layout.
+layout. Home is the logo, not a nav label, so the remaining items stay
+readable at desktop sizes.
 """
 
 MAIN_NAV = [
-    {"label": "Home", "url_name": "pages:home"},
     {
         "label": "Solutions & Products",
         "url_name": "pages:solutions",

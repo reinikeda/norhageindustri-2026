@@ -24,6 +24,17 @@ class PagesTests(TestCase):
         self.assertContains(response, "facebook.com/people/Norhage-Industri")
         self.assertContains(response, "911 648 032")
 
+    def test_header_uses_logo_for_home_and_keeps_quote_cta(self):
+        response = self.client.get(reverse("pages:home"))
+        header = response.content.decode().split("</header>", 1)[0]
+        self.assertIn('href="/"', header)
+        self.assertIn("logo-on-dark.png", header)
+        self.assertIn("header-cta", header)
+        self.assertIn("Ask for a quote", header)
+        self.assertIn("Solutions &amp; Products", header)
+        self.assertIn('aria-label="Norhage Industri home"', header)
+        self.assertNotIn(">Home</a>", header)
+
     def test_footer_covers_sales_catalog_and_legal(self):
         response = self.client.get(reverse("pages:home"))
         footer = response.content.decode().split('<footer class="site-footer">', 1)[-1]
